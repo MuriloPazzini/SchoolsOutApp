@@ -50,17 +50,16 @@ class _HomepageState extends State<Homepage>
           Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => Detailpage(
+                builder: (context) => ComicsReadingPage(
                       comics: clist,
                     )),
           );
         },
-        child: PopularMovie(
+        child: PopularHq(
           image: clist.pages[0].image,
           name: clist.name,
-          rating: '10',
         ));
-    bestm(BMovies movie) => TopMovies(
+    bestm(BMovies movie) => HqWidget(
           image: movie.Image,
         );
 
@@ -142,7 +141,7 @@ class _HomepageState extends State<Homepage>
                   ],
                 ),
               ),
-              netflixslider(),
+              hqSlider(),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
@@ -198,10 +197,10 @@ class ImageData extends StatelessWidget {
   }
 }
 
-class TopMovies extends StatelessWidget {
+class HqWidget extends StatelessWidget {
   final String image;
 
-  TopMovies({Key key, this.image});
+  HqWidget({Key key, this.image});
 
   @override
   Widget build(BuildContext context) {
@@ -232,11 +231,10 @@ class TopMovies extends StatelessWidget {
 
 ////////////////////////////////////////////
 
-class PopularMovie extends StatelessWidget {
+class PopularHq extends StatelessWidget {
   String image, name;
-  String rating;
 
-  PopularMovie({this.image, this.name, this.rating});
+  PopularHq({this.image, this.name});
 
   @override
   Widget build(BuildContext context) {
@@ -272,13 +270,6 @@ class PopularMovie extends StatelessWidget {
                     fontWeight: FontWeight.w600,
                     color: Colors.white),
               ),
-            ),
-            Text(
-              "IMDB ${rating}",
-              style: TextStyle(
-                  fontSize: 13,
-                  fontWeight: FontWeight.w400,
-                  color: Colors.white),
             ),
           ],
         ),
@@ -321,50 +312,68 @@ final List<Comics> comicsList = [
 
 ///////////////////////////////////////////////////
 
-final List<String> imglist = [
-  "assets/abducao_55_1.png",
-  "assets/abducao_55_1.jpg",
-  "assets/abducao_55_1.jpg",
-  "assets/abducao_55_1.jpg",
-  "assets/abducao_55_1.jpg",
-  "assets/abducao_55_1.jpg",
-  "assets/abducao_55_1.jpg",
-  "assets/abducao_55_1.jpg",
-  "assets/abducao_55_1.jpg",
-  "assets/abducao_55_1.jpg"
+final List<Comics> hqList = [
+  Comics('Teste', 1, [
+    ComicsPage('https://i.ibb.co/nmFdgs8/abduc-a-o-55-2.jpg', 1),
+    ComicsPage('https://i.ibb.co/kc1mjTW/abduc-a-o-55-1.png', 2),
+  ]),
+  Comics('Teste 2', 2, [
+    ComicsPage('https://i.ibb.co/nmFdgs8/abduc-a-o-55-2.jpg', 1),
+    ComicsPage('https://i.ibb.co/kc1mjTW/abduc-a-o-55-1.png', 2),
+  ]),
+  Comics('Teste 3', 3, [
+    ComicsPage('https://i.ibb.co/nmFdgs8/abduc-a-o-55-2.jpg', 1),
+    ComicsPage('https://i.ibb.co/kc1mjTW/abduc-a-o-55-1.png', 2),
+  ]),
 ];
 //final Widget placeholder=container();
 //List<hi> map<hi> hi passed in list for to
 // accpet any type agrument like widget,string,class (model class)
 
-class netflixslider extends StatelessWidget {
-  final CarouselSlider mostwatch = CarouselSlider(
-      autoPlay: true,
-      viewportFraction: 0.9,
-      aspectRatio: 2.4,
-      enlargeCenterPage: false,
-      items: imglist.map((url) {
-        return Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Container(
-            decoration: BoxDecoration(
-                image:
-                    DecorationImage(image: AssetImage(url), fit: BoxFit.cover),
-                borderRadius: BorderRadius.circular(12),
-                boxShadow: [
-                  BoxShadow(
-                      offset: Offset(0.2, 1.0),
-                      blurRadius: 2,
-                      color: Colors.white)
-                ]),
-            // child: Image.network(url),
-          ),
-        );
-      }).toList());
-
+class hqSlider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return mostwatch;
+    return CarouselSlider(
+        autoPlay: true,
+        viewportFraction: 0.9,
+        aspectRatio: 2.4,
+        enlargeCenterPage: false,
+        items: hqList.map((hq) {
+          return Builder(
+              builder: (BuildContext context) {
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                  child: GestureDetector(
+                      onTap: () {
+                        Navigator.push<Widget>(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ComicsReadingPage(
+                              comics: hq,
+                            ),
+                          ),
+                        );
+                      }),
+                decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: NetworkImage(hq.pages[0].image),
+                        fit: BoxFit.cover),
+                    borderRadius: BorderRadius.circular(12),
+                    boxShadow: [
+                      BoxShadow(
+                          offset: Offset(0.2, 1.0),
+                          blurRadius: 2,
+                          color: Colors.grey)
+                    ]),
+
+              ),
+            );
+          },
+          );
+          //////
+
+        }).toList());
   }
 }
 

@@ -3,10 +3,10 @@ import 'package:simple_animations/simple_animations.dart';
 import 'package:schools_out/pages/home.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
-class Detailpage extends StatelessWidget {
+class ComicsReadingPage extends StatelessWidget {
   final Comics comics;
 
-  Detailpage({this.comics});
+  ComicsReadingPage({this.comics});
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +31,14 @@ class Detailpage extends StatelessWidget {
                 return Container(
                   width: MediaQuery.of(context).size.width,
                   margin: EdgeInsets.symmetric(horizontal: 5.0),
-                  decoration: BoxDecoration(color: Colors.white),
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                            offset: Offset(0.2, 1.0),
+                            blurRadius: 2,
+                            color: Colors.grey)
+                      ]),
                   child: Image.network(
                     i.image,
                   ),
