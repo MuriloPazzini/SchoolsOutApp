@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:simple_animations/simple_animations.dart';
-import 'package:schools_out/pages/home.dart';
+import 'package:schools_out/entities/comics.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
 class ComicsReadingPage extends StatelessWidget {

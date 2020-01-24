@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:schools_out/pages/comicsPage.dart';
+import 'package:schools_out/components/hqSlider.dart';
+import 'package:schools_out/components/comicsSlider.dart';
 
 class Homepage extends StatefulWidget {
   @override
@@ -45,33 +45,6 @@ class _HomepageState extends State<Homepage>
 
   @override
   Widget build(BuildContext context) {
-    ComicsList(Comics clist) => InkWell(
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => ComicsReadingPage(
-                      comics: clist,
-                    )),
-          );
-        },
-        child: PopularHq(
-          image: clist.pages[0].image,
-          name: clist.name,
-        ));
-    bestm(BMovies movie) => HqWidget(
-          image: movie.Image,
-        );
-
-    final comics_scroll = Container(
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        physics: BouncingScrollPhysics(),
-        child: Row(
-          children: comicsList.map((cl) => ComicsList(cl)).toList(),
-        ),
-      ),
-    );
 
     return Scaffold(
         backgroundColor: Colors.white,
@@ -167,7 +140,7 @@ class _HomepageState extends State<Homepage>
                   ],
                 ),
               ),
-              comics_scroll
+              comicsSlider(),
             ],
           ),
         ));
@@ -195,193 +168,4 @@ class ImageData extends StatelessWidget {
       ),
     );
   }
-}
-
-class HqWidget extends StatelessWidget {
-  final String image;
-
-  HqWidget({Key key, this.image});
-
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: ClipOval(
-        child: Container(
-          height: 60,
-          width: 60,
-          decoration: BoxDecoration(
-              image: DecorationImage(
-                image: NetworkImage(image),
-                fit: BoxFit.cover,
-              ),
-              borderRadius: BorderRadius.circular(12.0),
-              boxShadow: [
-                BoxShadow(
-                    offset: Offset(0.5, 1.0),
-                    blurRadius: 5,
-                    color: Colors.white)
-              ]),
-        ),
-      ),
-    );
-  }
-}
-
-////////////////////////////////////////////
-
-class PopularHq extends StatelessWidget {
-  String image, name;
-
-  PopularHq({this.image, this.name});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: InkWell(
-        child: Column(
-          children: <Widget>[
-            Container(
-              height: 140,
-              width: 100,
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: NetworkImage(image),
-                    fit: BoxFit.cover,
-                  ),
-                  borderRadius: BorderRadius.circular(6.0),
-                  boxShadow: [
-                    BoxShadow(
-                        offset: Offset(0.5, 1.0),
-                        blurRadius: 5,
-                        color: Colors.white)
-                  ]),
-            ),
-            Container(
-              //width: 100,
-              //height: 40,
-              child: Text(
-                name,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-////////////////////////////////////////////
-
-class ComicsPage {
-  String image;
-  int page;
-
-  ComicsPage(this.image, this.page);
-}
-
-class Comics {
-  List<ComicsPage> pages;
-  String name;
-  int edition;
-
-  Comics(this.name, this.edition, this.pages);
-}
-
-final List<Comics> comicsList = [
-  Comics('Teste', 1, [
-    ComicsPage('https://i.ibb.co/nmFdgs8/abduc-a-o-55-2.jpg', 1),
-    ComicsPage('https://i.ibb.co/kc1mjTW/abduc-a-o-55-1.png', 2),
-  ]),
-  Comics('Teste 2', 2, [
-    ComicsPage('https://i.ibb.co/nmFdgs8/abduc-a-o-55-2.jpg', 1),
-    ComicsPage('https://i.ibb.co/kc1mjTW/abduc-a-o-55-1.png', 2),
-  ]),
-  Comics('Teste 3', 3, [
-    ComicsPage('https://i.ibb.co/nmFdgs8/abduc-a-o-55-2.jpg', 1),
-    ComicsPage('https://i.ibb.co/kc1mjTW/abduc-a-o-55-1.png', 2),
-  ]),
-];
-
-///////////////////////////////////////////////////
-
-final List<Comics> hqList = [
-  Comics('Teste', 1, [
-    ComicsPage('https://i.ibb.co/nmFdgs8/abduc-a-o-55-2.jpg', 1),
-    ComicsPage('https://i.ibb.co/kc1mjTW/abduc-a-o-55-1.png', 2),
-  ]),
-  Comics('Teste 2', 2, [
-    ComicsPage('https://i.ibb.co/nmFdgs8/abduc-a-o-55-2.jpg', 1),
-    ComicsPage('https://i.ibb.co/kc1mjTW/abduc-a-o-55-1.png', 2),
-  ]),
-  Comics('Teste 3', 3, [
-    ComicsPage('https://i.ibb.co/nmFdgs8/abduc-a-o-55-2.jpg', 1),
-    ComicsPage('https://i.ibb.co/kc1mjTW/abduc-a-o-55-1.png', 2),
-  ]),
-];
-//final Widget placeholder=container();
-//List<hi> map<hi> hi passed in list for to
-// accpet any type agrument like widget,string,class (model class)
-
-class hqSlider extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return CarouselSlider(
-        autoPlay: true,
-        viewportFraction: 0.9,
-        aspectRatio: 2.4,
-        enlargeCenterPage: false,
-        items: hqList.map((hq) {
-          return Builder(
-              builder: (BuildContext context) {
-            return Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Container(
-                  child: GestureDetector(
-                      onTap: () {
-                        Navigator.push<Widget>(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ComicsReadingPage(
-                              comics: hq,
-                            ),
-                          ),
-                        );
-                      }),
-                decoration: BoxDecoration(
-                    image: DecorationImage(
-                        image: NetworkImage(hq.pages[0].image),
-                        fit: BoxFit.cover),
-                    borderRadius: BorderRadius.circular(12),
-                    boxShadow: [
-                      BoxShadow(
-                          offset: Offset(0.2, 1.0),
-                          blurRadius: 2,
-                          color: Colors.grey)
-                    ]),
-
-              ),
-            );
-          },
-          );
-          //////
-
-        }).toList());
-  }
-}
-
-/////////////////////////////////////////////////////
-
-class BMovies {
-  String Image;
-  int Boxc;
-
-  BMovies(this.Image);
 }
