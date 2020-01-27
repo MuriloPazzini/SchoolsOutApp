@@ -37,11 +37,11 @@ class _LoggedInHomepage extends State<LoggedInHomepage>
   ];
 
   @override
-  void dispose() {
-    // TODO: implement dispose
+  dispose() {
+    animationController.dispose(); // you need this
     super.dispose();
-    animationController.dispose();
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +49,6 @@ class _LoggedInHomepage extends State<LoggedInHomepage>
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-          automaticallyImplyLeading: false,
           iconTheme: new IconThemeData(color: Colors.blueGrey[600]),
           centerTitle: true,
           title: Text(
@@ -82,7 +81,15 @@ class _LoggedInHomepage extends State<LoggedInHomepage>
               ),
               new ListTile(
                 title: new Text('Sair'),
-                onTap: signOut
+                onTap: () async {
+                  await FirebaseAuth.instance.signOut();
+
+                  Navigator.of(context).pop();
+                  Navigator.push(
+                      context,
+                      new MaterialPageRoute(
+                          builder: (BuildContext context) => new LoggedOutHomepage()));
+                }
               ),
             ],
           ),
@@ -175,10 +182,3 @@ class ImageData extends StatelessWidget {
   }
 }
 
-void signOut() async {
-
-  await FirebaseAuth.instance.signOut();
-
-  MaterialPageRoute(builder: (BuildContext context) => LoggedOutHomepage());
-
-}

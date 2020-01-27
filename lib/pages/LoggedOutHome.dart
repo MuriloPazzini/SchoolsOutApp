@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:schools_out/pages/home.dart';
+import 'package:schools_out/pages/loggedInHome.dart';
 import 'package:schools_out/pages/loggedinHome.dart';
 import 'package:schools_out/pages/signUp.dart';
 
@@ -15,6 +18,13 @@ class LoggedOutHomepage extends StatefulWidget {
 
 class _LoggedOutHomepage extends State<LoggedOutHomepage> {
 
+  @override
+  dispose() {
+    isLoading = false;
+    super.dispose();
+  }
+  
+  
   final emailField = TextField(
     controller: emailController,
     obscureText: false,
@@ -84,7 +94,74 @@ class _LoggedOutHomepage extends State<LoggedOutHomepage> {
                               color: Color(0xff01A0C7),
                               child: MaterialButton(
                                 padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-                                onPressed: signIn,
+                                onPressed: () async {
+                                  try {
+
+
+                                    setState(() {
+                                      isLoading = true;
+                                    });
+                                    FirebaseUser user = (await FirebaseAuth.instance.signInWithEmailAndPassword(
+                                        email: emailController.text, password: passwordController.text).timeout(new Duration(seconds: 45)))
+                                        .user;
+
+                                    Navigator.of(context).pop();
+                                    Navigator.push(
+                                      context,
+                                      new MaterialPageRoute(
+                                        builder: (BuildContext context) => new HomePage(),
+                                      ),
+                                    );
+
+                                  } catch (e) {
+                                    setState(() {
+                                      isLoading = false;
+                                    });
+                                    String errorToShow;
+
+                                    if (Platform.isAndroid) {
+                                      switch (e.message) {
+                                        case 'There is no user record corresponding to this identifier. The user may have been deleted.':
+                                          errorToShow = 'Usuário não encontrado';
+                                          break;
+                                        case 'The password is invalid or the user does not have a password.':
+                                          errorToShow = 'Senha é inválida';
+                                          break;
+                                        case 'A network error (such as timeout, interrupted connection or unreachable host) has occurred.':
+                                          errorToShow = 'Problema com conexão';
+                                          break;
+                                      // ...
+                                        default:
+                                          errorToShow = 'Ocorreu um problema ao autenticar';
+                                      }
+                                    } else if (Platform.isIOS) {
+                                      switch (e.code) {
+                                        case 'Error 17011':
+                                          errorToShow = 'Usuário não encontrado';
+                                          break;
+                                        case 'Error 17009':
+                                          errorToShow = 'Senha é inválida';
+                                          break;
+                                        case 'Error 17020':
+                                          errorToShow = 'Problema com conexão';
+                                          break;
+                                      // ...
+                                        default:
+                                          errorToShow = 'Ocorreu um problema ao autenticar';
+                                      }
+                                    }
+                                    return showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return AlertDialog(
+                                          // Retrieve the text the user has entered by using the
+                                          // TextEditingController.
+                                          content: Text(errorToShow),
+                                        );
+                                      },
+                                    );
+                                  }
+                                },
                                 child: Text(
                                   "Login",
                                   textAlign: TextAlign.center,
@@ -129,31 +206,6 @@ class _LoggedOutHomepage extends State<LoggedOutHomepage> {
   }
 
   void signIn() async {
-    try {
-      setState(() {
-        isLoading = true;
-      });
-      FirebaseUser user = (await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: emailController.text, password: passwordController.text))
-          .user;
 
-      MaterialPageRoute(builder: (BuildContext context) => LoggedInHomepage());
-    } catch (e) {
-      setState(() {
-        isLoading = false;
-      });
-        return showDialog(
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-              // Retrieve the text the user has entered by using the
-              // TextEditingController.
-              content: Text('Usuário ou senha não coincidem.'),
-            );
-          },
-        );
-
-      print(e.message);
-    }
   }
 }
