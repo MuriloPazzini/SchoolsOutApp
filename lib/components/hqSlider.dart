@@ -62,7 +62,7 @@ class _hqSliderState extends State<hqSlider> {
                             context,
                             MaterialPageRoute(
                               builder: (context) => ComicsReadingPage(
-                                comics: hq,
+                                hq,
                               ),
                             ),
                           );

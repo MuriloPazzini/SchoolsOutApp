@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:schools_out/components/hqSlider.dart';
 import 'package:schools_out/components/comicsSlider.dart';
-import 'package:schools_out/pages/home.dart';
 import 'package:schools_out/pages/loggedOutHome.dart';
 
 class LoggedInHomepage extends StatefulWidget {
@@ -50,6 +49,7 @@ class _LoggedInHomepage extends State<LoggedInHomepage>
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           iconTheme: new IconThemeData(color: Colors.blueGrey[600]),
           centerTitle: true,
           title: Text(
@@ -179,10 +179,6 @@ void signOut() async {
 
   await FirebaseAuth.instance.signOut();
 
-  runApp(
-      new MaterialApp(
-        home: new HomePage(),
-      )
-  );
+  MaterialPageRoute(builder: (BuildContext context) => LoggedOutHomepage());
 
 }

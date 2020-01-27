@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:schools_out/pages/loggedInHome.dart';
 
 TextEditingController emailController = new TextEditingController();
 TextEditingController passwordController = new TextEditingController();
@@ -149,6 +152,11 @@ class _SignUpPageState extends State<SignUpPage> {
         isLoading = false;
       });
 
+      Future.delayed(const Duration(milliseconds: 500), () {
+        MaterialPageRoute(
+            builder: (BuildContext context) => LoggedInHomepage());
+      });
+
       return showDialog(
         context: context,
         builder: (context) {
@@ -160,7 +168,50 @@ class _SignUpPageState extends State<SignUpPage> {
         },
       );
     } catch (e) {
-      print(e.message);
+
+      String errorToShow;
+
+      if (Platform.isAndroid) {
+        switch (e.message) {
+          case 'There is no user record corresponding to this identifier. The user may have been deleted.':
+            errorToShow = 'Usuário não encontrado';
+            break;
+          case 'The password is invalid or the user does not have a password.':
+            errorToShow = 'Senha é inválida';
+            break;
+          case 'A network error (such as timeout, interrupted connection or unreachable host) has occurred.':
+            errorToShow = 'Problema com conexão';
+            break;
+          // ...
+          default:
+            errorToShow = 'Ocorreu um problema ao autenticar';
+        }
+      } else if (Platform.isIOS) {
+        switch (e.code) {
+          case 'Error 17011':
+            errorToShow = 'Usuário não encontrado';
+            break;
+          case 'Error 17009':
+            errorToShow = 'Senha é inválida';
+            break;
+          case 'Error 17020':
+            errorToShow = 'Problema com conexão';
+            break;
+          // ...
+          default:
+            errorToShow = 'Ocorreu um problema ao autenticar';
+        }
+      }
+      return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            // Retrieve the text the user has entered by using the
+            // TextEditingController.
+            content: Text(errorToShow),
+          );
+        },
+      );
     }
   }
 }

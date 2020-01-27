@@ -8,24 +8,13 @@ TextEditingController emailController = new TextEditingController();
 TextEditingController passwordController = new TextEditingController();
 bool isLoading = false;
 
-void signIn() async {
-  try {
-    FirebaseUser user = (await FirebaseAuth.instance.signInWithEmailAndPassword(
-            email: emailController.text, password: passwordController.text))
-        .user;
-
-    MaterialPageRoute(builder: (BuildContext context) => HomePage());
-  } catch (e) {
-    print(e.message);
-  }
-}
-
 class LoggedOutHomepage extends StatefulWidget {
   @override
   _LoggedOutHomepage createState() => _LoggedOutHomepage();
 }
 
 class _LoggedOutHomepage extends State<LoggedOutHomepage> {
+
   final emailField = TextField(
     controller: emailController,
     obscureText: false,
@@ -42,25 +31,13 @@ class _LoggedOutHomepage extends State<LoggedOutHomepage> {
         hintText: "Password",
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
   );
-  final loginButon = Material(
-    elevation: 5.0,
-    borderRadius: BorderRadius.circular(30.0),
-    color: Color(0xff01A0C7),
-    child: MaterialButton(
-      padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-      onPressed: signIn,
-      child: Text(
-        "Login",
-        textAlign: TextAlign.center,
-      ),
-    ),
-  );
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: new AppBar(
         iconTheme: new IconThemeData(color: Colors.blueGrey[600]),
+        automaticallyImplyLeading: false,
         centerTitle: true,
         title: Text(
           "School's Out",
@@ -98,7 +75,22 @@ class _LoggedOutHomepage extends State<LoggedOutHomepage> {
                         )
                       : Column(
                           children: <Widget>[
-                            loginButon,
+                            isLoading
+                                ? Center(
+                              child: CircularProgressIndicator(),
+                            ) : Material(
+                              elevation: 5.0,
+                              borderRadius: BorderRadius.circular(30.0),
+                              color: Color(0xff01A0C7),
+                              child: MaterialButton(
+                                padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                                onPressed: signIn,
+                                child: Text(
+                                  "Login",
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            ),
                             Padding(
                               padding: EdgeInsets.fromLTRB(0.0, 12.0, 0.0, 0.0),
                               child: Material(
@@ -134,5 +126,34 @@ class _LoggedOutHomepage extends State<LoggedOutHomepage> {
         ),
       ),
     );
+  }
+
+  void signIn() async {
+    try {
+      setState(() {
+        isLoading = true;
+      });
+      FirebaseUser user = (await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: emailController.text, password: passwordController.text))
+          .user;
+
+      MaterialPageRoute(builder: (BuildContext context) => LoggedInHomepage());
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+        return showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              // Retrieve the text the user has entered by using the
+              // TextEditingController.
+              content: Text('Usuário ou senha não coincidem.'),
+            );
+          },
+        );
+
+      print(e.message);
+    }
   }
 }

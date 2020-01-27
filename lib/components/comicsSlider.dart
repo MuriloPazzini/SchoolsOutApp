@@ -27,11 +27,14 @@ class _comicsSlider extends State<comicsSlider> {
 
     ComicsList(Comics clist) => InkWell(
         onTap: () {
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) => ComicsReadingPage(clist)));
+
+
           Navigator.push(
             context,
             MaterialPageRoute(
                 builder: (context) => ComicsReadingPage(
-                  comics: clist,
+                  clist,
                 )),
           );
         },
