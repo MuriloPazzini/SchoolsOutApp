@@ -1,8 +1,7 @@
 import 'dart:async';
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:schools_out/entities/answer.dart';
+import 'package:schools_out/entities/question.dart';
 import 'package:schools_out/entities/quiz.dart';
 import 'package:schools_out/pages/quizResultPage.dart';
 
@@ -23,11 +22,15 @@ class _quizpageState extends State<quizpage> {
   Color wrong = Colors.red;
   int marks = 0;
   int i = 0;
-  int j = 1;
+  int j = 0;
   int timer = 30;
   String showtimer = "30";
 
   var btncolor = [
+    Colors.blue,
+    Colors.blue,
+    Colors.blue,
+    Colors.blue,
     Colors.blue,
     Colors.blue,
   ];
@@ -40,6 +43,7 @@ class _quizpageState extends State<quizpage> {
   @override
   void initState() {
     starttimer();
+    generateRandomOrderForAnwers(mydata.questions);
     generateRandomArray();
     super.initState();
   }
@@ -52,6 +56,14 @@ class _quizpageState extends State<quizpage> {
     }
   }
 
+  void generateRandomOrderForAnwers(List<Question> questions) {
+
+    questions.forEach((quest) {
+      quest.answers.shuffle();
+    });
+
+  }
+
   generateRandomArray() {
     var limit = mydata.questions.length;
 
@@ -60,6 +72,8 @@ class _quizpageState extends State<quizpage> {
     }
 
     random_array.shuffle();
+
+    i = random_array[0];
   }
 
   void starttimer() async {
@@ -83,9 +97,9 @@ class _quizpageState extends State<quizpage> {
     canceltimer = false;
     timer = 30;
     setState(() {
-      if (j < random_array.length) {
-        i = random_array[j];
+      if (j < random_array.length -1) {
         j++;
+        i = random_array[j];
       } else {
         Navigator.of(context).pushReplacement(MaterialPageRoute(
           builder: (context) => resultpage(marks: marks),
@@ -163,7 +177,6 @@ class _quizpageState extends State<quizpage> {
       result.add(choicebutton(w));
     }
 
-    result.shuffle();
     return result;
   }
 

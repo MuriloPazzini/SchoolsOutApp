@@ -32,8 +32,8 @@ class _hqSliderState extends State<hqSlider> {
       initialData: [],
       builder: (_, snapshot) {
         if (snapshot.data == null) {
-          return Container(
-            child: Text("Loading ..."),
+          return Center(
+            child: CircularProgressIndicator(),
           );
         } else if (snapshot.data.length > 0) {
           hqList.clear();
@@ -86,11 +86,10 @@ class _hqSliderState extends State<hqSlider> {
                     );
                   },
                 );
-                //////
               }).toList());
         } else {
-          return Container(
-            child: Text("No Content ..."),
+          return Center(
+            child: CircularProgressIndicator(),
           );
         }
       },

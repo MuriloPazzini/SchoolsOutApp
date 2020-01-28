@@ -52,8 +52,8 @@ class _comicsSlider extends State<comicsSlider> {
       initialData: [],
       builder: (_, snapshot) {
         if (snapshot.data == null) {
-          return Container(
-            child: Text("Loading ..."),
+          return Center(
+            child: CircularProgressIndicator(),
           );
         } else if(snapshot.data.length > 0){
           comicsList.clear();
@@ -79,8 +79,8 @@ class _comicsSlider extends State<comicsSlider> {
             ),
           );
         } else {
-          return Container(
-            child: Text("No Content ..."),
+          return Center(
+            child: CircularProgressIndicator(),
           );
         }
       },
