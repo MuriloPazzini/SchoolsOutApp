@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:schools_out/components/hqSlider.dart';
 import 'package:schools_out/components/comicsSlider.dart';
 import 'package:schools_out/pages/loggedOutHome.dart';
+import 'package:schools_out/pages/quizList.dart';
 
 class LoggedInHomepage extends StatefulWidget {
   @override
@@ -18,14 +19,14 @@ class _LoggedInHomepage extends State<LoggedInHomepage>
   void initState() {
     //super.initState();
     animationController =
-    new AnimationController(duration: Duration(seconds: 200), vsync: this);
+        new AnimationController(duration: Duration(seconds: 200), vsync: this);
     animation =
-    IntTween(begin: 0, end: photos.length - 1).animate(animationController)
-      ..addListener(() {
-        setState(() {
-          index = animation.value;
-        });
-      });
+        IntTween(begin: 0, end: photos.length - 1).animate(animationController)
+          ..addListener(() {
+            setState(() {
+              index = animation.value;
+            });
+          });
 
     animationController.repeat(period: Duration(seconds: 20));
   }
@@ -42,10 +43,8 @@ class _LoggedInHomepage extends State<LoggedInHomepage>
     super.dispose();
   }
 
-
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
@@ -56,42 +55,110 @@ class _LoggedInHomepage extends State<LoggedInHomepage>
             style: TextStyle(color: Colors.blueGrey[600], fontSize: 28),
           ),
           backgroundColor: Colors.white,
-          //    leading:Icon(Icons.notifications,color: Colors.red,) ,
-          //  toolbarOpacity: 0,
         ),
-        drawer: new Drawer(
-          child: ListView(
-            children: <Widget>[
-              new UserAccountsDrawerHeader(
-                accountName: new Text('Test User'),
-                accountEmail: new Text('testemail@test.com'),
-                currentAccountPicture: new CircleAvatar(
-                  backgroundImage: new NetworkImage('http://i.pravatar.cc/300'),
-                ),
-              ),
-              new ListTile(
-                title: new Text('Test Navigation'),
-                onTap: () {
-                  Navigator.of(context).pop();
-                  Navigator.push(
-                      context,
-                      new MaterialPageRoute(
-                          builder: (BuildContext context) => new LoggedInHomepage()));
-                },
-              ),
-              new ListTile(
-                title: new Text('Sair'),
-                onTap: () async {
-                  await FirebaseAuth.instance.signOut();
+        drawer: new SizedBox(
+          width: MediaQuery.of(context).size.width * 0.55, //20.0,
+          child: ClipRRect(
+            borderRadius: BorderRadius.vertical(top: Radius.circular(4.0)),
+            child: new Drawer(
+              child: ListView(
+                children: <Widget>[
+                  new Container(
+                      height: MediaQuery.of(context).size.width * 0.21,
+                      child: Center(
+                        child: UserAccountsDrawerHeader(
+                          accountName: new Text('Test User'),
+                          accountEmail: new Text('testemail@test.com'),
+                        ),
+                      )),
+                  new Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      RawMaterialButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                          Navigator.push(
+                              context,
+                              new MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                      new LoggedInHomepage()));
+                        },
+                        child: new Image.asset(
+                          "assets/logo.png",
+                          fit: BoxFit.contain,
+                          width: 20.0,
+                          height: 20.0,
+                        ),
+                        shape: new CircleBorder(),
+                        elevation: 2.0,
+                        fillColor: Colors.white,
+                        padding: const EdgeInsets.all(15.0),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(top: 12.0),
+                        child: Text('Home'),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(top: 20.0),
+                        child: RawMaterialButton(
+                          onPressed: () async {
+                            Navigator.of(context).pop();
+                            Navigator.push(
+                                context,
+                                new MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                    new QuizList()));
+                          },
+                          child: new Image.asset(
+                            "assets/logo.png",
+                            fit: BoxFit.contain,
+                            width: 20.0,
+                            height: 20.0,
+                          ),
+                          shape: new CircleBorder(),
+                          elevation: 2.0,
+                          fillColor: Colors.white,
+                          padding: const EdgeInsets.all(15.0),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(top: 12.0),
+                        child: Text('Quiz'),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(top: 20.0),
+                        child: RawMaterialButton(
+                          onPressed: () async {
+                            await FirebaseAuth.instance.signOut();
 
-                  Navigator.of(context).pop();
-                  Navigator.push(
-                      context,
-                      new MaterialPageRoute(
-                          builder: (BuildContext context) => new LoggedOutHomepage()));
-                }
+                            Navigator.of(context).pop();
+                            Navigator.push(
+                                context,
+                                new MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        new LoggedOutHomepage()));
+                          },
+                          child: new Image.asset(
+                            "assets/logo.png",
+                            fit: BoxFit.contain,
+                            width: 20.0,
+                            height: 20.0,
+                          ),
+                          shape: new CircleBorder(),
+                          elevation: 2.0,
+                          fillColor: Colors.white,
+                          padding: const EdgeInsets.all(15.0),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(top: 12.0),
+                        child: Text('Sair'),
+                      ),
+                    ],
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
         ),
         body: SingleChildScrollView(
@@ -142,13 +209,6 @@ class _LoggedInHomepage extends State<LoggedInHomepage>
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.65,
                     ),
-                    Text(
-                      "See All",
-                      style: TextStyle(
-                          fontWeight: FontWeight.w900,
-                          fontSize: 16,
-                          color: Colors.blueGrey),
-                    )
                   ],
                 ),
               ),
@@ -181,4 +241,3 @@ class ImageData extends StatelessWidget {
     );
   }
 }
-

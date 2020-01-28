@@ -15,7 +15,10 @@ class _hqSliderState extends State<hqSlider> {
   Future getHqs() async {
     var firestore = Firestore.instance;
 
-    QuerySnapshot qn = await firestore.collection("comics").where('type', isEqualTo: 'hq').getDocuments();
+    QuerySnapshot qn = await firestore
+        .collection("comics")
+        .where('type', isEqualTo: 'hq')
+        .getDocuments();
 
     return qn.documents;
   }
@@ -32,18 +35,19 @@ class _hqSliderState extends State<hqSlider> {
           return Container(
             child: Text("Loading ..."),
           );
-        } else if(snapshot.data.length > 0){
+        } else if (snapshot.data.length > 0) {
           hqList.clear();
 
           snapshot.data.forEach((element) {
             List<ComicsPage> pagesForThisHq = new List<ComicsPage>();
 
             element.data['pages'].forEach((page) {
-              pagesForThisHq.add(ComicsPage(page['image'].toString(), page['page']));
+              pagesForThisHq
+                  .add(ComicsPage(page['image'].toString(), page['page']));
             });
 
-            hqList.add(
-                Comics(element.data['name'], element.data['edition'], pagesForThisHq));
+            hqList.add(Comics(
+                element.data['name'], element.data['edition'], pagesForThisHq));
           });
 
           return CarouselSlider(

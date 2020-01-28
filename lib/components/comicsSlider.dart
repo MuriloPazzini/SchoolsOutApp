@@ -115,7 +115,7 @@ class PopularHq extends StatelessWidget {
               decoration: BoxDecoration(
                   image: DecorationImage(
                     image: NetworkImage(image),
-                    fit: BoxFit.cover,
+                    fit: BoxFit.fill,
                   ),
                   borderRadius: BorderRadius.circular(6.0),
                   boxShadow: [

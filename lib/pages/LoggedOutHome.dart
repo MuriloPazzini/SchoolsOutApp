@@ -97,10 +97,10 @@ class _LoggedOutHomepage extends State<LoggedOutHomepage> {
                                 onPressed: () async {
                                   try {
 
-
                                     setState(() {
                                       isLoading = true;
                                     });
+
                                     FirebaseUser user = (await FirebaseAuth.instance.signInWithEmailAndPassword(
                                         email: emailController.text, password: passwordController.text).timeout(new Duration(seconds: 45)))
                                         .user;
@@ -203,9 +203,5 @@ class _LoggedOutHomepage extends State<LoggedOutHomepage> {
         ),
       ),
     );
-  }
-
-  void signIn() async {
-
   }
 }
