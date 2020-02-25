@@ -17,20 +17,13 @@ class LoggedOutHomepage extends StatefulWidget {
 }
 
 class _LoggedOutHomepage extends State<LoggedOutHomepage> {
-
-  @override
-  dispose() {
-    isLoading = false;
-    super.dispose();
-  }
-  
-  
   final emailField = TextField(
     controller: emailController,
     obscureText: false,
     decoration: InputDecoration(
         contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-        hintText: "Email",
+        hintText: "E-mail",
+        hintStyle: TextStyle(fontFamily: 'Toontime'),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
   );
   final passwordField = TextField(
@@ -38,9 +31,23 @@ class _LoggedOutHomepage extends State<LoggedOutHomepage> {
     obscureText: true,
     decoration: InputDecoration(
         contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-        hintText: "Password",
+        hintText: "Senha",
+        hintStyle: TextStyle(fontFamily: 'Toontime'),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
   );
+
+  @override
+  dispose() {
+    isLoading = false;
+    super.dispose();
+  }
+
+  @override
+  @protected
+  @mustCallSuper
+  initState() {
+    isLoading = false;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,9 +58,10 @@ class _LoggedOutHomepage extends State<LoggedOutHomepage> {
         centerTitle: true,
         title: Text(
           "School's Out",
-          style: TextStyle(color: Colors.blueGrey[600], fontSize: 28),
+          style: TextStyle(
+              color: Colors.white, fontSize: 28, fontFamily: 'Toontime'),
         ),
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.blueGrey[600],
       ),
       body: SingleChildScrollView(
         child: Center(
@@ -87,93 +95,116 @@ class _LoggedOutHomepage extends State<LoggedOutHomepage> {
                           children: <Widget>[
                             isLoading
                                 ? Center(
-                              child: CircularProgressIndicator(),
-                            ) : Material(
-                              elevation: 5.0,
-                              borderRadius: BorderRadius.circular(30.0),
-                              color: Color(0xff01A0C7),
-                              child: MaterialButton(
-                                padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-                                onPressed: () async {
-                                  try {
+                                    child: CircularProgressIndicator(),
+                                  )
+                                : Material(
+                                    elevation: 5.0,
+                                    borderRadius: BorderRadius.circular(30.0),
+                                    color: Colors.blueGrey[600],
+                                    child: MaterialButton(
+                                      padding: EdgeInsets.fromLTRB(
+                                          20.0, 15.0, 20.0, 15.0),
+                                      onPressed: () async {
+                                        try {
+                                          setState(() {
+                                            isLoading = true;
+                                          });
 
-                                    setState(() {
-                                      isLoading = true;
-                                    });
+                                          FirebaseUser user = (await FirebaseAuth
+                                                  .instance
+                                                  .signInWithEmailAndPassword(
+                                                      email:
+                                                          emailController.text,
+                                                      password:
+                                                          passwordController
+                                                              .text)
+                                                  .timeout(new Duration(
+                                                      seconds: 45)))
+                                              .user;
 
-                                    FirebaseUser user = (await FirebaseAuth.instance.signInWithEmailAndPassword(
-                                        email: emailController.text, password: passwordController.text).timeout(new Duration(seconds: 45)))
-                                        .user;
+                                          Navigator.of(context).pop();
+                                          Navigator.push(
+                                            context,
+                                            new MaterialPageRoute(
+                                              builder: (BuildContext context) =>
+                                                  new HomePage(),
+                                            ),
+                                          );
+                                        } catch (e) {
+                                          setState(() {
+                                            isLoading = false;
+                                          });
+                                          String errorToShow;
 
-                                    Navigator.of(context).pop();
-                                    Navigator.push(
-                                      context,
-                                      new MaterialPageRoute(
-                                        builder: (BuildContext context) => new HomePage(),
-                                      ),
-                                    );
-
-                                  } catch (e) {
-                                    setState(() {
-                                      isLoading = false;
-                                    });
-                                    String errorToShow;
-
-                                    if (Platform.isAndroid) {
-                                      switch (e.message) {
-                                        case 'There is no user record corresponding to this identifier. The user may have been deleted.':
-                                          errorToShow = 'Usuário não encontrado';
-                                          break;
-                                        case 'The password is invalid or the user does not have a password.':
-                                          errorToShow = 'Senha é inválida';
-                                          break;
-                                        case 'A network error (such as timeout, interrupted connection or unreachable host) has occurred.':
-                                          errorToShow = 'Problema com conexão';
-                                          break;
-                                      // ...
-                                        default:
-                                          errorToShow = 'Ocorreu um problema ao autenticar';
-                                      }
-                                    } else if (Platform.isIOS) {
-                                      switch (e.code) {
-                                        case 'Error 17011':
-                                          errorToShow = 'Usuário não encontrado';
-                                          break;
-                                        case 'Error 17009':
-                                          errorToShow = 'Senha é inválida';
-                                          break;
-                                        case 'Error 17020':
-                                          errorToShow = 'Problema com conexão';
-                                          break;
-                                      // ...
-                                        default:
-                                          errorToShow = 'Ocorreu um problema ao autenticar';
-                                      }
-                                    }
-                                    return showDialog(
-                                      context: context,
-                                      builder: (context) {
-                                        return AlertDialog(
-                                          // Retrieve the text the user has entered by using the
-                                          // TextEditingController.
-                                          content: Text(errorToShow),
-                                        );
+                                          if (Platform.isAndroid) {
+                                            switch (e.message) {
+                                              case 'There is no user record corresponding to this identifier. The user may have been deleted.':
+                                                errorToShow =
+                                                    'Usuário não encontrado';
+                                                break;
+                                              case 'The password is invalid or the user does not have a password.':
+                                                errorToShow =
+                                                    'Senha é inválida';
+                                                break;
+                                              case 'A network error (such as timeout, interrupted connection or unreachable host) has occurred.':
+                                                errorToShow =
+                                                    'Problema com conexão';
+                                                break;
+                                              // ...
+                                              default:
+                                                errorToShow =
+                                                    'Ocorreu um problema ao autenticar';
+                                            }
+                                          } else if (Platform.isIOS) {
+                                            switch (e.code) {
+                                              case 'Error 17011':
+                                                errorToShow =
+                                                    'Usuário não encontrado';
+                                                break;
+                                              case 'Error 17009':
+                                                errorToShow =
+                                                    'Senha é inválida';
+                                                break;
+                                              case 'Error 17020':
+                                                errorToShow =
+                                                    'Problema com conexão';
+                                                break;
+                                              // ...
+                                              default:
+                                                errorToShow =
+                                                    'Ocorreu um problema ao autenticar';
+                                            }
+                                          }
+                                          return showDialog(
+                                            context: context,
+                                            builder: (context) {
+                                              return AlertDialog(
+                                                // Retrieve the text the user has entered by using the
+                                                // TextEditingController.
+                                                content: Text(errorToShow,
+                                                    style: TextStyle(
+                                                        fontFamily: 'Toontime',
+                                                        color: Colors.white)),
+                                              );
+                                            },
+                                          );
+                                        }
                                       },
-                                    );
-                                  }
-                                },
-                                child: Text(
-                                  "Login",
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
-                            ),
+                                      child: Text(
+                                        "Login",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            fontFamily: 'Toontime',
+                                            color: Colors.white),
+                                      ),
+                                    ),
+                                  ),
                             Padding(
                               padding: EdgeInsets.fromLTRB(0.0, 12.0, 0.0, 0.0),
                               child: Material(
                                 elevation: 5.0,
                                 borderRadius: BorderRadius.circular(30.0),
-                                color: Color(0xff01A0C7),
+                                color: Colors.blueGrey[600],
                                 child: MaterialButton(
                                   padding: EdgeInsets.fromLTRB(
                                       20.0, 15.0, 20.0, 15.0),
@@ -184,10 +215,11 @@ class _LoggedOutHomepage extends State<LoggedOutHomepage> {
                                           builder: (context) => SignUpPage()),
                                     );
                                   },
-                                  child: Text(
-                                    "Cadastro",
-                                    textAlign: TextAlign.center,
-                                  ),
+                                  child: Text("Cadastro",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          fontFamily: 'Toontime',
+                                          color: Colors.white)),
                                 ),
                               ),
                             ),

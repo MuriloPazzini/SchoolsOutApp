@@ -7,7 +7,9 @@ import 'package:schools_out/pages/quizResultPage.dart';
 
 class quizpage extends StatefulWidget {
   final Quiz mydata;
+
   const quizpage(this.mydata);
+
   @override
   _quizpageState createState() => _quizpageState(mydata);
 }
@@ -57,17 +59,15 @@ class _quizpageState extends State<quizpage> {
   }
 
   void generateRandomOrderForAnwers(List<Question> questions) {
-
     questions.forEach((quest) {
       quest.answers.shuffle();
     });
-
   }
 
   generateRandomArray() {
     var limit = mydata.questions.length;
 
-    for(var x = 0; x < limit; x++){
+    for (var x = 0; x < limit; x++) {
       random_array.add(x);
     }
 
@@ -97,7 +97,7 @@ class _quizpageState extends State<quizpage> {
     canceltimer = false;
     timer = 30;
     setState(() {
-      if (j < random_array.length -1) {
+      if (j < random_array.length - 1) {
         j++;
         i = random_array[j];
       } else {
@@ -111,7 +111,6 @@ class _quizpageState extends State<quizpage> {
       btncolor[3] = Colors.blue;
       btncolor[4] = Colors.blue;
       btncolor[5] = Colors.blue;
-
     });
     starttimer();
   }
@@ -173,7 +172,7 @@ class _quizpageState extends State<quizpage> {
   List<Widget> generateChoiceButtons(List<Answer> possibleAnswers) {
     List<Widget> result = List<Padding>();
 
-    for(var w = 0; w < possibleAnswers.length; w++) {
+    for (var w = 0; w < possibleAnswers.length; w++) {
       result.add(choicebutton(w));
     }
 
@@ -183,48 +182,47 @@ class _quizpageState extends State<quizpage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Column(
-          children: <Widget>[
-            Expanded(
-              flex: 3,
-              child: Container(
-                padding: EdgeInsets.all(15.0),
-                alignment: Alignment.bottomLeft,
+      body: Column(
+        children: <Widget>[
+          Expanded(
+            flex: 3,
+            child: Container(
+              padding: EdgeInsets.all(15.0),
+              alignment: Alignment.bottomLeft,
+              child: Center(
                 child: Text(
                   mydata.questions[i].description,
-                  style: TextStyle(
-                    fontSize: 16.0),
+                  style: TextStyle(fontSize: 16.0),
                 ),
               ),
             ),
-            Expanded(
-              flex: 6,
-              child: Container(
-                child: Column(
+          ),
+          Expanded(
+            flex: 6,
+            child: Container(
+              child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: generateChoiceButtons(mydata.questions[i].answers)
-                ),
-              ),
+                  children: generateChoiceButtons(mydata.questions[i].answers)),
             ),
-            Expanded(
-              flex: 1,
-              child: Container(
-                alignment: Alignment.topCenter,
-                child: Center(
-                  child: Text(
-                    showtimer,
-                    style: TextStyle(
-                      fontSize: 35.0,
-                      fontWeight: FontWeight.w700,
-                      fontFamily: 'Times New Roman',
-                    ),
+          ),
+          Expanded(
+            flex: 1,
+            child: Container(
+              alignment: Alignment.topCenter,
+              child: Center(
+                child: Text(
+                  showtimer,
+                  style: TextStyle(
+                    fontSize: 35.0,
+                    fontWeight: FontWeight.w700,
+                    fontFamily: 'Times New Roman',
                   ),
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
+      ),
     );
-
   }
 }

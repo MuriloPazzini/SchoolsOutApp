@@ -1,13 +1,27 @@
 import 'dart:io';
+import 'dart:async';
 
+import "package:firebase_storage/firebase_storage.dart";
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:schools_out/pages/home.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:schools_out/pages/loggedInHome.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 TextEditingController emailController = new TextEditingController();
+TextEditingController nickNameController = new TextEditingController();
+TextEditingController aboutMeController = new TextEditingController();
 TextEditingController passwordController = new TextEditingController();
 bool isLoading = false;
+File avatarImageFile;
+String id = '';
+String nickname = '';
+String aboutMe = '';
+String photoUrl = '';
 
 class SignUpPage extends StatefulWidget {
   @override
@@ -15,15 +29,34 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  String _email, _password;
+  String photoUrl = '';
+  SharedPreferences prefs;
 
+  final nickNameField = TextField(
+    controller: nickNameController,
+    obscureText: false,
+    decoration: InputDecoration(
+        contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+        hintText: "Apelido",
+        hintStyle: TextStyle(fontFamily: 'Toontime'),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
+  );
+  final aboutMeField = TextField(
+    controller: aboutMeController,
+    obscureText: false,
+    decoration: InputDecoration(
+        contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+        hintText: "Interesses",
+        hintStyle: TextStyle(fontFamily: 'Toontime'),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
+  );
   final emailField = TextField(
     controller: emailController,
     obscureText: false,
     decoration: InputDecoration(
         contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-        hintText: "Email",
+        hintText: "E-mail",
+        hintStyle: TextStyle(fontFamily: 'Toontime'),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
   );
   final passwordField = TextField(
@@ -31,21 +64,117 @@ class _SignUpPageState extends State<SignUpPage> {
     obscureText: true,
     decoration: InputDecoration(
         contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-        hintText: "Password",
+        hintText: "Senha",
+        hintStyle: TextStyle(fontFamily: 'Toontime'),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
   );
+
+  Future getImage() async {
+    File image = await ImagePicker.pickImage(source: ImageSource.gallery);
+
+    if (image != null) {
+      setState(() {
+        avatarImageFile = image;
+      });
+    }
+  }
+
+  Future handleUpdateData(userId, photoUrlRef) async {
+    var collectionRef = Firestore.instance.collection('users');
+
+    String nicknameValue = nickNameController.text;
+    String aboutMeValue = aboutMeController.text;
+
+    await collectionRef.document(userId).setData({
+      'id': userId,
+      'role': 'free',
+      'nickname': nicknameValue,
+      'aboutMe': aboutMeValue,
+      'photoUrl': photoUrlRef
+    }).then((data) async {
+      await SharedPreferences.getInstance().then((SharedPreferences sp) {
+        prefs = sp;
+
+        prefs.setString('nickname', nicknameValue);
+        prefs.setString('aboutMe', aboutMeValue);
+        prefs.setString('photoUrl', photoUrlRef);
+
+        print(prefs);
+
+        Fluttertoast.showToast(msg: "Registrado com sucesso");
+
+        Navigator.of(context).pop();
+        Navigator.push(
+          context,
+          new MaterialPageRoute(
+            builder: (BuildContext context) => new HomePage(),
+          ),
+        );
+      });
+    }).catchError((err) {
+      setState(() {
+        isLoading = false;
+      });
+      print(err);
+
+      Fluttertoast.showToast(msg: err.toString());
+    });
+  }
+
+  Future uploadFile(fileName) async {
+    if (fileName != null && fileName != '') {
+      StorageReference reference =
+          FirebaseStorage.instance.ref().child(fileName);
+      StorageUploadTask uploadTask = reference.putFile(avatarImageFile);
+      StorageTaskSnapshot storageTaskSnapshot;
+      uploadTask.onComplete.then((value) {
+        if (value.error == null) {
+          storageTaskSnapshot = value;
+          storageTaskSnapshot.ref.getDownloadURL().then((downloadUrl) {
+            photoUrl = downloadUrl;
+            handleUpdateData(fileName, photoUrl);
+          }, onError: (err) {
+            setState(() {
+              isLoading = false;
+            });
+            Fluttertoast.showToast(msg: 'Esse arquivo não é uma imagem');
+          });
+        } else {
+          setState(() {
+            isLoading = false;
+          });
+          Fluttertoast.showToast(msg: 'Esse arquivo não é uma imagem');
+        }
+      }, onError: (err) {
+        setState(() {
+          isLoading = false;
+        });
+        print(err.toString());
+        Fluttertoast.showToast(msg: err.toString());
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    isLoading = false;
+  }
 
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: new AppBar(
-        iconTheme: new IconThemeData(color: Colors.blueGrey[600]),
+        iconTheme: new IconThemeData(color: Colors.white),
         centerTitle: true,
+        backgroundColor: Colors.blueGrey[600],
         title: Text(
           "School's Out",
-          style: TextStyle(color: Colors.blueGrey[600], fontSize: 28),
+          style: TextStyle(
+              color: Colors.white,
+              fontSize: 28,
+              fontFamily: 'Toontime'),
         ),
-        backgroundColor: Colors.white,
       ),
       body: SingleChildScrollView(
         child: Center(
@@ -57,14 +186,60 @@ class _SignUpPageState extends State<SignUpPage> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  SizedBox(
-                    height: 155.0,
-                    child: Image.asset(
-                      "assets/logo.png",
-                      fit: BoxFit.contain,
+                  (avatarImageFile == null)
+                      ? (photoUrl != ''
+                          ? Material(
+                              child: CachedNetworkImage(
+                                placeholder: (context, url) => Container(
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2.0,
+                                    valueColor: AlwaysStoppedAnimation<Color>(
+                                        Colors.blueGrey[600]),
+                                  ),
+                                  width: 90.0,
+                                  height: 90.0,
+                                  padding: EdgeInsets.all(20.0),
+                                ),
+                                imageUrl: photoUrl,
+                                width: 90.0,
+                                height: 90.0,
+                                fit: BoxFit.cover,
+                              ),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(45.0)),
+                              clipBehavior: Clip.hardEdge,
+                            )
+                          : Icon(
+                              Icons.account_circle,
+                              size: 90.0,
+                              color: Colors.grey,
+                            ))
+                      : Material(
+                          child: Image.file(
+                            avatarImageFile,
+                            width: 90.0,
+                            height: 90.0,
+                            fit: BoxFit.cover,
+                          ),
+                          borderRadius: BorderRadius.all(Radius.circular(45.0)),
+                          clipBehavior: Clip.hardEdge,
+                        ),
+                  IconButton(
+                    icon: Icon(
+                      Icons.camera_alt,
+                      color: Colors.grey,
                     ),
+                    onPressed: getImage,
+                    padding: EdgeInsets.all(30.0),
+                    splashColor: Colors.transparent,
+                    highlightColor: Colors.grey,
+                    iconSize: 30.0,
                   ),
                   SizedBox(height: 45.0),
+                  nickNameField,
+                  SizedBox(height: 25.0),
+                  aboutMeField,
+                  SizedBox(height: 25.0),
                   emailField,
                   SizedBox(height: 25.0),
                   passwordField,
@@ -78,15 +253,16 @@ class _SignUpPageState extends State<SignUpPage> {
                       : Material(
                           elevation: 5.0,
                           borderRadius: BorderRadius.circular(30.0),
-                          color: Color(0xff01A0C7),
+                          color: Colors.blueGrey[600],
                           child: MaterialButton(
                             padding:
                                 EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
                             onPressed: signUp,
-                            child: Text(
-                              "Cadastrar",
-                              textAlign: TextAlign.center,
-                            ),
+                            child: Text("Cadastrar",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontFamily: 'Toontime')),
                           ),
                         ),
                   SizedBox(
@@ -106,17 +282,19 @@ class _SignUpPageState extends State<SignUpPage> {
       setState(() {
         isLoading = true;
       });
+
       if (passwordController.text.length < 8) {
         setState(() {
           isLoading = false;
         });
+
         return showDialog(
           context: context,
           builder: (context) {
             return AlertDialog(
               // Retrieve the text the user has entered by using the
               // TextEditingController.
-              content: Text('Senha deve conter ao menos 8 caracteres.'),
+              content: Text('Senha deve conter ao menos 8 caracteres!'),
             );
           },
         );
@@ -128,13 +306,31 @@ class _SignUpPageState extends State<SignUpPage> {
         setState(() {
           isLoading = false;
         });
+
         return showDialog(
           context: context,
           builder: (context) {
             return AlertDialog(
               // Retrieve the text the user has entered by using the
               // TextEditingController.
-              content: Text('E-mail não é válido'),
+              content: Text('E-mail não é válido!'),
+            );
+          },
+        );
+      }
+
+      if (avatarImageFile == null) {
+        setState(() {
+          isLoading = false;
+        });
+
+        return showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              // Retrieve the text the user has entered by using the
+              // TextEditingController.
+              content: Text('Insira uma imagem para seu perfil!'),
             );
           },
         );
@@ -144,32 +340,15 @@ class _SignUpPageState extends State<SignUpPage> {
           .createUserWithEmailAndPassword(
               email: emailController.text, password: passwordController.text);
 
-      await Firestore.instance
-          .collection('users')
-          .add({'user_id': result.user.uid, 'role': 'free'});
+      if (result != null) {
+        await uploadFile(result.user.uid);
+      }
+    } catch (e) {
+      String errorToShow;
 
       setState(() {
         isLoading = false;
       });
-
-      Future.delayed(const Duration(milliseconds: 500), () {
-        MaterialPageRoute(
-            builder: (BuildContext context) => LoggedInHomepage());
-      });
-
-      return showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            // Retrieve the text the user has entered by using the
-            // TextEditingController.
-            content: Text('Cadastro efetuado com sucesso!'),
-          );
-        },
-      );
-    } catch (e) {
-
-      String errorToShow;
 
       if (Platform.isAndroid) {
         switch (e.message) {

@@ -63,7 +63,8 @@ class _resultpageState extends State<resultpage> {
                         accountName: new Text('Test User'),
                         accountEmail: new Text('testemail@test.com'),
                       ),
-                    )),
+                    ),
+                ),
                 new Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[

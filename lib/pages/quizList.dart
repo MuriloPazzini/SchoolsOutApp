@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:schools_out/components/menu.dart';
 import 'package:schools_out/entities/answer.dart';
 import 'package:schools_out/entities/question.dart';
 import 'package:schools_out/entities/quiz.dart';
@@ -95,111 +96,7 @@ class _QuizList extends State<QuizList> {
               ),
               backgroundColor: Colors.white,
             ),
-            drawer: new SizedBox(
-              width: MediaQuery.of(context).size.width * 0.55, //20.0,
-              child: ClipRRect(
-                borderRadius: BorderRadius.vertical(top: Radius.circular(4.0)),
-                child: new Drawer(
-                  child: ListView(
-                    children: <Widget>[
-                      new Container(
-                          height: MediaQuery.of(context).size.width * 0.21,
-                          child: Center(
-                            child: UserAccountsDrawerHeader(
-                              accountName: new Text('Test User'),
-                              accountEmail: new Text('testemail@test.com'),
-                            ),
-                          )),
-                      new Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          RawMaterialButton(
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                              Navigator.push(
-                                  context,
-                                  new MaterialPageRoute(
-                                      builder: (BuildContext context) =>
-                                      new LoggedInHomepage()));
-                            },
-                            child: new Image.asset(
-                              "assets/logo.png",
-                              fit: BoxFit.contain,
-                              width: 20.0,
-                              height: 20.0,
-                            ),
-                            shape: new CircleBorder(),
-                            elevation: 2.0,
-                            fillColor: Colors.white,
-                            padding: const EdgeInsets.all(15.0),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(top: 12.0),
-                            child: Text('Home'),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(top: 20.0),
-                            child: RawMaterialButton(
-                              onPressed: () async {
-                                Navigator.of(context).pop();
-                                Navigator.push(
-                                    context,
-                                    new MaterialPageRoute(
-                                        builder: (BuildContext context) =>
-                                        new QuizList()));
-                              },
-                              child: new Image.asset(
-                                "assets/logo.png",
-                                fit: BoxFit.contain,
-                                width: 20.0,
-                                height: 20.0,
-                              ),
-                              shape: new CircleBorder(),
-                              elevation: 2.0,
-                              fillColor: Colors.white,
-                              padding: const EdgeInsets.all(15.0),
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(top: 12.0),
-                            child: Text('Quiz'),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(top: 20.0),
-                            child: RawMaterialButton(
-                              onPressed: () async {
-                                await FirebaseAuth.instance.signOut();
-
-                                Navigator.of(context).pop();
-                                Navigator.push(
-                                    context,
-                                    new MaterialPageRoute(
-                                        builder: (BuildContext context) =>
-                                        new LoggedOutHomepage()));
-                              },
-                              child: new Image.asset(
-                                "assets/logo.png",
-                                fit: BoxFit.contain,
-                                width: 20.0,
-                                height: 20.0,
-                              ),
-                              shape: new CircleBorder(),
-                              elevation: 2.0,
-                              fillColor: Colors.white,
-                              padding: const EdgeInsets.all(15.0),
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(top: 12.0),
-                            child: Text('Sair'),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
+            drawer: menu(),
             body: Container(
               padding: EdgeInsets.only(top:15.0),
                 child: GridView.count(

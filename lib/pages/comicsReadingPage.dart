@@ -5,6 +5,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 
 class ComicsReadingPage extends StatefulWidget {
   final Comics comics;
+
   const ComicsReadingPage(this.comics);
 
   @override
@@ -69,13 +70,14 @@ class _ComicsReadingPage extends State<ComicsReadingPage> {
 
     return Scaffold(
       appBar: AppBar(
-        iconTheme: new IconThemeData(color: Colors.blueGrey[600]),
+        iconTheme: new IconThemeData(color: Colors.white),
         centerTitle: true,
         title: Text(
           "School's Out",
-          style: TextStyle(color: Colors.blueGrey[600], fontSize: 28),
+          style: TextStyle(
+              color: Colors.white, fontSize: 28, fontFamily: 'Toontime'),
         ),
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.blueGrey[600],
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -96,6 +98,7 @@ class _ComicsReadingPage extends State<ComicsReadingPage> {
                   textAlign: TextAlign.center,
                   decoration: InputDecoration(
                       hintText: "Página que deseja ir",
+                      hintStyle: TextStyle(fontFamily: 'Toontime'),
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(32.0))),
                 ),
