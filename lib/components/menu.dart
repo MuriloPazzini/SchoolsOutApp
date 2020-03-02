@@ -40,11 +40,15 @@ class _menuState extends State<menu> {
                                 padding: EdgeInsets.only(top: 15.0),
                               ),
                               Padding(
-                                padding: EdgeInsets.only(top: 12.0, bottom: 20.0),
-                                child: Text('Carregando...', style: TextStyle(color: Colors.white, fontSize: 16, fontFamily: 'Toontime')),
+                                padding:
+                                    EdgeInsets.only(top: 12.0, bottom: 20.0),
+                                child: Text('Carregando...',
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 16,
+                                        fontFamily: 'Toontime')),
                               ),
-                            ]
-                        ),
+                            ]),
                       ),
                       new Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -58,7 +62,7 @@ class _menuState extends State<menu> {
                                     context,
                                     new MaterialPageRoute(
                                         builder: (BuildContext context) =>
-                                        new LoggedInHomepage()));
+                                            new LoggedInHomepage()));
                               },
                               child: new Image.asset(
                                 "assets/logo.png",
@@ -74,7 +78,8 @@ class _menuState extends State<menu> {
                           ),
                           Padding(
                             padding: EdgeInsets.only(top: 12.0),
-                            child: Text('Home', style: TextStyle(fontFamily: 'Toontime')),
+                            child: Text('Home',
+                                style: TextStyle(fontFamily: 'Toontime')),
                           ),
                           Padding(
                             padding: EdgeInsets.only(top: 20.0),
@@ -101,7 +106,8 @@ class _menuState extends State<menu> {
                           ),
                           Padding(
                             padding: EdgeInsets.only(top: 12.0),
-                            child: Text('Quiz', style: TextStyle(fontFamily: 'Toontime')),
+                            child: Text('Quiz',
+                                style: TextStyle(fontFamily: 'Toontime')),
                           ),
                           Padding(
                             padding: EdgeInsets.only(top: 20.0),
@@ -130,7 +136,8 @@ class _menuState extends State<menu> {
                           ),
                           Padding(
                             padding: EdgeInsets.only(top: 12.0),
-                            child: Text('Sair', style: TextStyle(fontFamily: 'Toontime')),
+                            child: Text('Sair',
+                                style: TextStyle(fontFamily: 'Toontime')),
                           ),
                         ],
                       ),
@@ -151,23 +158,27 @@ class _menuState extends State<menu> {
                         padding: EdgeInsets.all(0.0),
                         color: Colors.blueGrey[600],
                         child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Padding(
                                 child: new CircleAvatar(
                                   backgroundImage:
-                                  new NetworkImage(snapshot.data.photoUrl),
+                                      new NetworkImage(snapshot.data.photoUrl),
                                   radius: 35.0,
                                   backgroundColor: Colors.white,
                                 ),
                                 padding: EdgeInsets.only(top: 15.0),
                               ),
                               Padding(
-                                padding: EdgeInsets.only(top: 12.0, bottom: 20.0),
-                                child: Text(snapshot.data.nickname, style: TextStyle(color: Colors.white, fontSize: 16, fontFamily: 'Toontime')),
+                                padding:
+                                    EdgeInsets.only(top: 12.0, bottom: 20.0),
+                                child: Text(snapshot.data.nickname,
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 16,
+                                        fontFamily: 'Toontime')),
                               ),
-                            ]
-                        ),
+                            ]),
                       ),
                       new Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -181,7 +192,7 @@ class _menuState extends State<menu> {
                                     context,
                                     new MaterialPageRoute(
                                         builder: (BuildContext context) =>
-                                        new LoggedInHomepage()));
+                                            new LoggedInHomepage()));
                               },
                               child: new Image.asset(
                                 "assets/logo.png",
@@ -197,7 +208,8 @@ class _menuState extends State<menu> {
                           ),
                           Padding(
                             padding: EdgeInsets.only(top: 12.0),
-                            child: Text('Home', style: TextStyle(fontFamily: 'Toontime')),
+                            child: Text('Home',
+                                style: TextStyle(fontFamily: 'Toontime')),
                           ),
                           Padding(
                             padding: EdgeInsets.only(top: 20.0),
@@ -224,7 +236,8 @@ class _menuState extends State<menu> {
                           ),
                           Padding(
                             padding: EdgeInsets.only(top: 12.0),
-                            child: Text('Quiz', style: TextStyle(fontFamily: 'Toontime')),
+                            child: Text('Quiz',
+                                style: TextStyle(fontFamily: 'Toontime')),
                           ),
                           Padding(
                             padding: EdgeInsets.only(top: 20.0),
@@ -253,7 +266,8 @@ class _menuState extends State<menu> {
                           ),
                           Padding(
                             padding: EdgeInsets.only(top: 12.0),
-                            child: Text('Sair', style: TextStyle(fontFamily: 'Toontime')),
+                            child: Text('Sair',
+                                style: TextStyle(fontFamily: 'Toontime')),
                           ),
                         ],
                       ),

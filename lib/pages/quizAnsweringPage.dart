@@ -17,9 +17,11 @@ class quizpage extends StatefulWidget {
 class _quizpageState extends State<quizpage> {
   Quiz mydata;
 
+  bool isQuizAnswered;
+
   _quizpageState(this.mydata);
 
-  Color colortoshow = Colors.blue;
+  Color colortoshow = Colors.blueGrey[600];
   Color right = Colors.green;
   Color wrong = Colors.red;
   int marks = 0;
@@ -29,21 +31,22 @@ class _quizpageState extends State<quizpage> {
   String showtimer = "30";
 
   var btncolor = [
-    Colors.blue,
-    Colors.blue,
-    Colors.blue,
-    Colors.blue,
-    Colors.blue,
-    Colors.blue,
+    Colors.blueGrey[600],
+    Colors.blueGrey[600],
+    Colors.blueGrey[600],
+    Colors.blueGrey[600],
+    Colors.blueGrey[600],
+    Colors.blueGrey[600],
   ];
 
-  bool canceltimer = false;
+  bool canceltimer = true;
 
   var random_array = [];
 
   // overriding the initstate function to start timer as this screen is created
   @override
   void initState() {
+    isQuizAnswered = false;
     starttimer();
     generateRandomOrderForAnwers(mydata.questions);
     generateRandomArray();
@@ -94,7 +97,7 @@ class _quizpageState extends State<quizpage> {
   }
 
   void nextquestion() {
-    canceltimer = false;
+    canceltimer = true;
     timer = 30;
     setState(() {
       if (j < random_array.length - 1) {
@@ -102,15 +105,17 @@ class _quizpageState extends State<quizpage> {
         i = random_array[j];
       } else {
         Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: (context) => resultpage(marks: marks),
+          builder: (context) =>
+              resultpage(marks: marks, questionsLength: random_array.length),
         ));
       }
-      btncolor[0] = Colors.blue;
-      btncolor[1] = Colors.blue;
-      btncolor[2] = Colors.blue;
-      btncolor[3] = Colors.blue;
-      btncolor[4] = Colors.blue;
-      btncolor[5] = Colors.blue;
+      btncolor[0] = Colors.blueGrey[600];
+      btncolor[1] = Colors.blueGrey[600];
+      btncolor[2] = Colors.blueGrey[600];
+      btncolor[3] = Colors.blueGrey[600];
+      btncolor[4] = Colors.blueGrey[600];
+      btncolor[5] = Colors.blueGrey[600];
+      isQuizAnswered = false;
     });
     starttimer();
   }
@@ -120,25 +125,28 @@ class _quizpageState extends State<quizpage> {
     // mydata[2]["1"] == mydata[1]["1"][k]
     // which i forgot to change
     // so nake sure that this is now corrected
-    if (mydata.questions[i].answers[k].correct) {
-      // just a print sattement to check the correct working
-      // debugPrint(mydata[2][i.toString()] + " is equal to " + mydata[1][i.toString()][k]);
-      marks = marks + 1;
-      // changing the color variable to be green
-      colortoshow = right;
-    } else {
-      // just a print sattement to check the correct working
-      // debugPrint(mydata[2]["1"] + " is equal to " + mydata[1]["1"][k]);
-      colortoshow = wrong;
-    }
-    setState(() {
-      // applying the changed color to the particular button that was selected
-      btncolor[k] = colortoshow;
-      canceltimer = true;
-    });
+    if (!isQuizAnswered) {
+      isQuizAnswered = true;
+      if (mydata.questions[i].answers[k].correct) {
+        // just a print sattement to check the correct working
+        // debugPrint(mydata[2][i.toString()] + " is equal to " + mydata[1][i.toString()][k]);
+        marks = marks + 1;
+        // changing the color variable to be green
+        colortoshow = right;
+      } else {
+        // just a print sattement to check the correct working
+        // debugPrint(mydata[2]["1"] + " is equal to " + mydata[1]["1"][k]);
+        colortoshow = wrong;
+      }
+      setState(() {
+        // applying the changed color to the particular button that was selected
+        btncolor[k] = colortoshow;
+        canceltimer = true;
+      });
 
-    // changed timer duration to 1 second
-    Timer(Duration(seconds: 1), nextquestion);
+      // changed timer duration to 1 second
+      Timer(Duration(seconds: 1), nextquestion);
+    }
   }
 
   Widget choicebutton(int k) {
@@ -153,14 +161,14 @@ class _quizpageState extends State<quizpage> {
           mydata.questions[i].answers[k].description,
           style: TextStyle(
             color: Colors.white,
-            fontFamily: "Alike",
+            fontFamily: "Toontime",
             fontSize: 16.0,
           ),
           maxLines: 1,
         ),
         color: btncolor[k],
-        splashColor: Colors.indigo[700],
-        highlightColor: Colors.indigo[700],
+        splashColor: Colors.blueGrey[700],
+        highlightColor: Colors.blueGrey[700],
         minWidth: 200.0,
         height: 45.0,
         shape:
@@ -182,46 +190,42 @@ class _quizpageState extends State<quizpage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: <Widget>[
-          Expanded(
-            flex: 3,
-            child: Container(
-              padding: EdgeInsets.all(15.0),
-              alignment: Alignment.bottomLeft,
-              child: Center(
-                child: Text(
-                  mydata.questions[i].description,
-                  style: TextStyle(fontSize: 16.0),
-                ),
-              ),
-            ),
-          ),
-          Expanded(
-            flex: 6,
-            child: Container(
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: generateChoiceButtons(mydata.questions[i].answers)),
-            ),
-          ),
-          Expanded(
-            flex: 1,
-            child: Container(
-              alignment: Alignment.topCenter,
-              child: Center(
-                child: Text(
-                  showtimer,
-                  style: TextStyle(
-                    fontSize: 35.0,
-                    fontWeight: FontWeight.w700,
-                    fontFamily: 'Times New Roman',
+      body: Center(
+        child: Container(
+          width: MediaQuery.of(context).size.width * 0.85,
+          height: MediaQuery.of(context).size.height * 0.55,
+          child: Card(
+            borderOnForeground: true,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.only(
+                      bottom: MediaQuery.of(context).size.width * 0.15),
+                  child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    padding: EdgeInsets.all(15.0),
+                    alignment: Alignment.bottomLeft,
+                    child: Center(
+                      child: Text(
+                        mydata.questions[i].description,
+                        textAlign: TextAlign.center,
+                        style:
+                            TextStyle(fontSize: 18.0, fontFamily: 'Toontime'),
+                      ),
+                    ),
                   ),
                 ),
-              ),
+                Container(
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children:
+                          generateChoiceButtons(mydata.questions[i].answers)),
+                ),
+              ],
             ),
           ),
-        ],
+        ),
       ),
     );
   }

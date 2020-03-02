@@ -1,11 +1,13 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:schools_out/pages/home.dart';
 import 'package:schools_out/pages/loggedInHome.dart';
 import 'package:schools_out/pages/loggedinHome.dart';
 import 'package:schools_out/pages/signUp.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 TextEditingController emailController = new TextEditingController();
 TextEditingController passwordController = new TextEditingController();
@@ -51,6 +53,8 @@ class _LoggedOutHomepage extends State<LoggedOutHomepage> {
 
   @override
   Widget build(BuildContext context) {
+    SharedPreferences prefs;
+
     return Scaffold(
       appBar: new AppBar(
         iconTheme: new IconThemeData(color: Colors.blueGrey[600]),
@@ -121,6 +125,29 @@ class _LoggedOutHomepage extends State<LoggedOutHomepage> {
                                                   .timeout(new Duration(
                                                       seconds: 45)))
                                               .user;
+
+                                          var firestore = Firestore.instance;
+
+                                          QuerySnapshot userQn = await firestore
+                                              .collection("users")
+                                              .where('id', isEqualTo: user.uid)
+                                              .getDocuments();
+
+                                          var userInfo = userQn.documents;
+
+                                          await SharedPreferences.getInstance()
+                                              .then((SharedPreferences sp) {
+                                            prefs = sp;
+                                            prefs.setString('userId', user.uid);
+                                            prefs.setString(
+                                                'role', userInfo[0]['role']);
+                                            prefs.setString('nickname',
+                                                userInfo[0]['nickname']);
+                                            prefs.setString('aboutMe',
+                                                userInfo[0]['aboutMe']);
+                                            prefs.setString('photoUrl',
+                                                userInfo[0]['photoUrl']);
+                                          });
 
                                           Navigator.of(context).pop();
                                           Navigator.push(

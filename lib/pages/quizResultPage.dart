@@ -1,18 +1,22 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:schools_out/components/menu.dart';
 import 'package:schools_out/pages/loggedInHome.dart';
 import 'package:schools_out/pages/loggedOutHome.dart';
 import 'package:schools_out/pages/quizList.dart';
 
 class resultpage extends StatefulWidget {
   int marks;
-  resultpage({Key key , @required this.marks}) : super(key : key);
+  int questionsLength;
+
+  resultpage({Key key, @required this.marks, @required this.questionsLength})
+      : super(key: key);
+
   @override
-  _resultpageState createState() => _resultpageState(marks);
+  _resultpageState createState() => _resultpageState(marks, questionsLength);
 }
 
 class _resultpageState extends State<resultpage> {
-
   List<String> images = [
     "assets/logo.png",
     "assets/logo.png",
@@ -23,144 +27,39 @@ class _resultpageState extends State<resultpage> {
   String image;
 
   @override
-  void initState(){
-    if(marks < 20){
-      image = images[2];
-      message = "You Should Try Hard..\n" + "You Scored $marks";
-    }else if(marks < 35){
-      image = images[1];
-      message = "You Can Do Better..\n" + "You Scored $marks";
-    }else{
-      image = images[0];
-      message = "You Did Very Well..\n" + "You Scored $marks";
+  void initState() {
+    image = images[0];
+
+    if (marks == 0) {
+      message = "Você não acertou nenhuma perqunta";
+    } else {
+      message = "Você acertou $marks de $questionsLength";
     }
+
     super.initState();
   }
 
   int marks;
-  _resultpageState(this.marks);
+  int questionsLength;
+
+  _resultpageState(this.marks, this.questionsLength);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          "Resultado",
-        ),
+        title: Text("Resultado",
+            style: TextStyle(fontFamily: 'Toontime', color: Colors.white)),
         automaticallyImplyLeading: false,
         centerTitle: true,
+        backgroundColor: Colors.blueGrey[600],
       ),
-      drawer: new SizedBox(
-        width: MediaQuery.of(context).size.width * 0.55, //20.0,
-        child: ClipRRect(
-          borderRadius: BorderRadius.vertical(top: Radius.circular(4.0)),
-          child: new Drawer(
-            child: ListView(
-              children: <Widget>[
-                new Container(
-                    height: MediaQuery.of(context).size.width * 0.21,
-                    child: Center(
-                      child: UserAccountsDrawerHeader(
-                        accountName: new Text('Test User'),
-                        accountEmail: new Text('testemail@test.com'),
-                      ),
-                    ),
-                ),
-                new Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    RawMaterialButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                        Navigator.push(
-                            context,
-                            new MaterialPageRoute(
-                                builder: (BuildContext context) =>
-                                new LoggedInHomepage()));
-                      },
-                      child: new Image.asset(
-                        "assets/logo.png",
-                        fit: BoxFit.contain,
-                        width: 20.0,
-                        height: 20.0,
-                      ),
-                      shape: new CircleBorder(),
-                      elevation: 2.0,
-                      fillColor: Colors.white,
-                      padding: const EdgeInsets.all(15.0),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(top: 12.0),
-                      child: Text('Home'),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(top: 20.0),
-                      child: RawMaterialButton(
-                        onPressed: () async {
-                          Navigator.of(context).pop();
-                          Navigator.push(
-                              context,
-                              new MaterialPageRoute(
-                                  builder: (BuildContext context) =>
-                                  new QuizList()));
-                        },
-                        child: new Image.asset(
-                          "assets/logo.png",
-                          fit: BoxFit.contain,
-                          width: 20.0,
-                          height: 20.0,
-                        ),
-                        shape: new CircleBorder(),
-                        elevation: 2.0,
-                        fillColor: Colors.white,
-                        padding: const EdgeInsets.all(15.0),
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(top: 12.0),
-                      child: Text('Sair'),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(top: 20.0),
-                      child: RawMaterialButton(
-                        onPressed: () async {
-                          await FirebaseAuth.instance.signOut();
-
-                          Navigator.of(context).pop();
-                          Navigator.push(
-                              context,
-                              new MaterialPageRoute(
-                                  builder: (BuildContext context) =>
-                                  new LoggedOutHomepage()));
-                        },
-                        child: new Image.asset(
-                          "assets/logo.png",
-                          fit: BoxFit.contain,
-                          width: 20.0,
-                          height: 20.0,
-                        ),
-                        shape: new CircleBorder(),
-                        elevation: 2.0,
-                        fillColor: Colors.white,
-                        padding: const EdgeInsets.all(15.0),
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(top: 12.0),
-                      child: Text('Sair'),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
+      drawer: menu(),
       body: Column(
         children: <Widget>[
           Expanded(
             flex: 8,
             child: Material(
-              elevation: 10.0,
               child: Container(
                 child: Column(
                   children: <Widget>[
@@ -179,19 +78,42 @@ class _resultpageState extends State<resultpage> {
                     ),
                     Padding(
                         padding: EdgeInsets.symmetric(
-                          vertical: 5.0,
+                          horizontal: 15.0,
+                        ),
+                        child: Center(
+                          child: (marks == 0)
+                              ? Text(
+                                  'Que pena!',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: 38.0,
+                                    fontFamily: "Toontime",
+                                  ),
+                                )
+                              : Text(
+                                  'Parabéns!',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: 38.0,
+                                    fontFamily: "Toontime",
+                                  ),
+                                ),
+                        )),
+                    Padding(
+                        padding: EdgeInsets.symmetric(
+                          vertical: 05.0,
                           horizontal: 15.0,
                         ),
                         child: Center(
                           child: Text(
                             message,
+                            textAlign: TextAlign.center,
                             style: TextStyle(
-                              fontSize: 18.0,
-                              fontFamily: "Quando",
+                              fontSize: 22.0,
+                              fontFamily: "Toontime",
                             ),
                           ),
-                        )
-                    ),
+                        )),
                   ],
                 ),
               ),
@@ -203,16 +125,14 @@ class _resultpageState extends State<resultpage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 OutlineButton(
-                  onPressed: (){
+                  onPressed: () {
                     Navigator.of(context).pushReplacement(MaterialPageRoute(
                       builder: (context) => QuizList(),
                     ));
                   },
                   child: Text(
                     "Continue",
-                    style: TextStyle(
-                      fontSize: 18.0,
-                    ),
+                    style: TextStyle(fontSize: 18.0, fontFamily: 'Toontime'),
                   ),
                   padding: EdgeInsets.symmetric(
                     vertical: 10.0,

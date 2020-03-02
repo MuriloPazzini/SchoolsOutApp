@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:schools_out/components/hqSlider.dart';
 import 'package:schools_out/components/comicsSlider.dart';
 import 'package:schools_out/components/menu.dart';
+import 'package:schools_out/components/quizSlider.dart';
 import 'package:schools_out/pages/loggedOutHome.dart';
 import 'package:schools_out/pages/quizList.dart';
 
@@ -78,35 +79,35 @@ class _LoggedInHomepage extends State<LoggedInHomepage>
                   // crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      "HQ's",
+                      "Quiz",
                       style: TextStyle(
                           fontWeight: FontWeight.w900,
-                          fontSize: 16,
+                          fontSize: 15,
                           color: Colors.blueGrey,
                           fontFamily: 'Toontime'),
                     ),
                     SizedBox(
-                      width: 180,
+                      width: MediaQuery.of(context).size.width * 0.65,
                     ),
                   ],
                 ),
               ),
-              hqSlider(),
+              quizSlider(),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
                   // crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      "Tirinhas",
+                      "LIVROS",
                       style: TextStyle(
                           fontWeight: FontWeight.w900,
-                          fontSize: 16,
+                          fontSize: 15,
                           color: Colors.blueGrey,
                           fontFamily: 'Toontime'),
                     ),
                     SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.65,
+                      width: 180,
                     ),
                   ],
                 ),

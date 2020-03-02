@@ -94,7 +94,8 @@ class _SignUpPageState extends State<SignUpPage> {
     }).then((data) async {
       await SharedPreferences.getInstance().then((SharedPreferences sp) {
         prefs = sp;
-
+        prefs.setString('userId', userId);
+        prefs.setString('role', 'free');
         prefs.setString('nickname', nicknameValue);
         prefs.setString('aboutMe', aboutMeValue);
         prefs.setString('photoUrl', photoUrlRef);
@@ -171,9 +172,7 @@ class _SignUpPageState extends State<SignUpPage> {
         title: Text(
           "School's Out",
           style: TextStyle(
-              color: Colors.white,
-              fontSize: 28,
-              fontFamily: 'Toontime'),
+              color: Colors.white, fontSize: 28, fontFamily: 'Toontime'),
         ),
       ),
       body: SingleChildScrollView(
