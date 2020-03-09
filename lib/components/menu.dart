@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:schools_out/entities/user.dart';
 import 'package:schools_out/pages/loggedInHome.dart';
 import 'package:schools_out/pages/loggedOutHome.dart';
 import 'package:schools_out/pages/quizList.dart';
@@ -11,18 +12,26 @@ class menu extends StatefulWidget {
 }
 
 class _menuState extends State<menu> {
+  Future<User> futureUser;
+
+  @override
+  void initState() {
+    super.initState();
+    futureUser = getLoggedUser();
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: getLoggedUser(),
+        future: futureUser,
         initialData: null,
         builder: (_, snapshot) {
-          if (snapshot.data == null) {
+          if (snapshot.hasData) {
             return new SizedBox(
               width: MediaQuery.of(context).size.width * 0.3, //20.0,
               child: ClipRRect(
                 borderRadius: BorderRadius.vertical(top: Radius.circular(4.0)),
-                child: Drawer(
+                child: new Drawer(
                   child: ListView(
                     children: <Widget>[
                       Container(
@@ -32,21 +41,21 @@ class _menuState extends State<menu> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Padding(
-                                child: new Icon(
-                                  Icons.account_circle,
-                                  size: 70.0,
-                                  color: Colors.grey,
+                                child: new CircleAvatar(
+                                  backgroundImage:
+                                  new NetworkImage(snapshot.data.photoUrl),
+                                  radius: 35.0,
+                                  backgroundColor: Colors.white,
                                 ),
                                 padding: EdgeInsets.only(top: 15.0),
                               ),
                               Padding(
                                 padding:
-                                    EdgeInsets.only(top: 12.0, bottom: 20.0),
-                                child: Text('Carregando...',
+                                EdgeInsets.only(top: 12.0, bottom: 20.0),
+                                child: Text(snapshot.data.nickname,
                                     style: TextStyle(
                                         color: Colors.white,
-                                        fontSize: 16,
-                                        fontFamily: 'Toontime')),
+                                        fontSize: 16, fontFamily: 'Toontime')),
                               ),
                             ]),
                       ),
@@ -62,7 +71,7 @@ class _menuState extends State<menu> {
                                     context,
                                     new MaterialPageRoute(
                                         builder: (BuildContext context) =>
-                                            new LoggedInHomepage()));
+                                        new LoggedInHomepage()));
                               },
                               child: new Image.asset(
                                 "assets/logo.png",
@@ -90,7 +99,7 @@ class _menuState extends State<menu> {
                                     context,
                                     new MaterialPageRoute(
                                         builder: (BuildContext context) =>
-                                            new QuizList()));
+                                        new QuizList()));
                               },
                               child: new Image.asset(
                                 "assets/logo.png",
@@ -120,7 +129,7 @@ class _menuState extends State<menu> {
                                     context,
                                     new MaterialPageRoute(
                                         builder: (BuildContext context) =>
-                                            new LoggedOutHomepage()));
+                                        new LoggedOutHomepage()));
                               },
                               child: new Image.asset(
                                 "assets/logo.png",
@@ -151,7 +160,7 @@ class _menuState extends State<menu> {
               width: MediaQuery.of(context).size.width * 0.3, //20.0,
               child: ClipRRect(
                 borderRadius: BorderRadius.vertical(top: Radius.circular(4.0)),
-                child: new Drawer(
+                child: Drawer(
                   child: ListView(
                     children: <Widget>[
                       Container(
@@ -161,18 +170,17 @@ class _menuState extends State<menu> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Padding(
-                                child: new CircleAvatar(
-                                  backgroundImage:
-                                      new NetworkImage(snapshot.data.photoUrl),
-                                  radius: 35.0,
-                                  backgroundColor: Colors.white,
+                                child: new Icon(
+                                  Icons.account_circle,
+                                  size: 70.0,
+                                  color: Colors.grey,
                                 ),
                                 padding: EdgeInsets.only(top: 15.0),
                               ),
                               Padding(
                                 padding:
-                                    EdgeInsets.only(top: 12.0, bottom: 20.0),
-                                child: Text(snapshot.data.nickname,
+                                EdgeInsets.only(top: 12.0, bottom: 20.0),
+                                child: Text('Carregando...',
                                     style: TextStyle(
                                         color: Colors.white,
                                         fontSize: 16,
@@ -192,7 +200,7 @@ class _menuState extends State<menu> {
                                     context,
                                     new MaterialPageRoute(
                                         builder: (BuildContext context) =>
-                                            new LoggedInHomepage()));
+                                        new LoggedInHomepage()));
                               },
                               child: new Image.asset(
                                 "assets/logo.png",
@@ -220,7 +228,7 @@ class _menuState extends State<menu> {
                                     context,
                                     new MaterialPageRoute(
                                         builder: (BuildContext context) =>
-                                            new QuizList()));
+                                        new QuizList()));
                               },
                               child: new Image.asset(
                                 "assets/logo.png",
@@ -250,7 +258,7 @@ class _menuState extends State<menu> {
                                     context,
                                     new MaterialPageRoute(
                                         builder: (BuildContext context) =>
-                                            new LoggedOutHomepage()));
+                                        new LoggedOutHomepage()));
                               },
                               child: new Image.asset(
                                 "assets/logo.png",

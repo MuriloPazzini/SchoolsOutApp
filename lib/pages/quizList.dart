@@ -12,12 +12,21 @@ class QuizList extends StatefulWidget {
 }
 
 class _QuizList extends State<QuizList> {
+
+  Future<List<Quiz>> futureQuizList;
+
+  @override
+  void initState() {
+    super.initState();
+    futureQuizList = getQuiz();
+  }
+
   @override
   Widget build(BuildContext context) {
     List<Quiz> quizList = new List<Quiz>();
 
     return FutureBuilder(
-      future: getQuiz(),
+      future: futureQuizList,
       initialData: [],
       builder: (_, snapshot) {
         if (snapshot.data == null) {

@@ -3,7 +3,9 @@ import 'dart:async';
 
 import "package:firebase_storage/firebase_storage.dart";
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:schools_out/entities/user.dart';
 import 'package:schools_out/pages/home.dart';
+import 'package:schools_out/services/userService.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -85,13 +87,9 @@ class _SignUpPageState extends State<SignUpPage> {
     String nicknameValue = nickNameController.text;
     String aboutMeValue = aboutMeController.text;
 
-    await collectionRef.document(userId).setData({
-      'id': userId,
-      'role': 'free',
-      'nickname': nicknameValue,
-      'aboutMe': aboutMeValue,
-      'photoUrl': photoUrlRef
-    }).then((data) async {
+    User newUser = new User(userId, nicknameValue, aboutMeValue, photoUrlRef, 'free');
+
+    await RegisterNewUser(newUser).then((data) async {
       await SharedPreferences.getInstance().then((SharedPreferences sp) {
         prefs = sp;
         prefs.setString('userId', userId);

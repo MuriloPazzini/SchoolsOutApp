@@ -2,18 +2,22 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:schools_out/entities/answer.dart';
 import 'package:schools_out/entities/question.dart';
 import 'package:schools_out/entities/quiz.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
-Future getQuiz() async {
+const String BASE_URL = 'http://schools-out-backend.herokuapp.com';
+
+Future<List<Quiz>> getQuiz() async {
   List<Quiz> quizList = new List<Quiz>();
 
-  var firestore = Firestore.instance;
+  final response = await http.get('${BASE_URL}/api/quiz/all');
 
-  QuerySnapshot qn = await firestore.collection("quiz").getDocuments();
+  var documents = json.decode(response.body);
 
-  qn.documents.forEach((element) {
+  documents.forEach((element) {
     List<Question> questions = new List<Question>();
 
-    element.data['questions'].forEach((question) {
+    element['questions'].forEach((question) {
       List<Answer> answersForThisQuestion = new List<Answer>();
 
       question['answers'].forEach((answer) {
@@ -24,7 +28,7 @@ Future getQuiz() async {
           .add(new Question(question['description'], answersForThisQuestion));
     });
 
-    Quiz quizToAdd = new Quiz(element.data['name'], questions);
+    Quiz quizToAdd = new Quiz(element['name'], questions);
     quizList.add(quizToAdd);
   });
 

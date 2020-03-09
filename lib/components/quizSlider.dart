@@ -16,10 +16,19 @@ class quizSlider extends StatefulWidget {
 }
 
 class _quizSliderState extends State<quizSlider> {
+
+  Future<List<Quiz>> futureQuizList;
+
+  @override
+  void initState() {
+    super.initState();
+    futureQuizList = getQuiz();
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: getQuiz(),
+      future: futureQuizList,
       initialData: [],
       builder: (_, snapshot) {
         if (snapshot.data == null) {

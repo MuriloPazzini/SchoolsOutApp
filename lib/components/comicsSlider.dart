@@ -13,12 +13,22 @@ class comicsSlider extends StatefulWidget {
 }
 
 class _comicsSliderState extends State<comicsSlider> {
+
+  List<Comics> comicsList = new List<Comics>();
+  Future<List<Comics>> futureComicsList;
+
+  @override
+  void initState() {
+    super.initState();
+    futureComicsList = getComics();
+  }
+
+
   @override
   Widget build(BuildContext context) {
-    List<Comics> hqList = new List<Comics>();
 
     return FutureBuilder(
-      future: getComics(),
+      future: futureComicsList,
       initialData: [],
       builder: (_, snapshot) {
         if (snapshot.data == null) {
@@ -26,18 +36,18 @@ class _comicsSliderState extends State<comicsSlider> {
             child: CircularProgressIndicator(),
           );
         } else if (snapshot.data.length > 0) {
-          hqList.clear();
+          comicsList.clear();
 
           snapshot.data.forEach((element) {
             List<ComicsPage> pagesForThisHq = new List<ComicsPage>();
 
-            element.data['pages'].forEach((page) {
+            element.pages.forEach((page) {
               pagesForThisHq
-                  .add(ComicsPage(page['image'].toString(), page['page']));
+                  .add(ComicsPage(page.image.toString(), page.page));
             });
 
-            hqList.add(Comics(
-                element.data['name'], element.data['edition'], pagesForThisHq));
+            comicsList.add(Comics(
+                element.name, element.edition, pagesForThisHq));
           });
 
           return Container(
@@ -45,7 +55,7 @@ class _comicsSliderState extends State<comicsSlider> {
               scrollDirection: Axis.horizontal,
               physics: BouncingScrollPhysics(),
               child: Row(
-                  children: hqList.map((hq) {
+                  children: comicsList.map((hq) {
                 return Builder(builder: (BuildContext context) {
                   return Padding(
                     padding: const EdgeInsets.all(8.0),

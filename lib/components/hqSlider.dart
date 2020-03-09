@@ -13,31 +13,39 @@ class hqSlider extends StatefulWidget {
 }
 
 class _hqSliderState extends State<hqSlider> {
+  List<Comics> hqList = new List<Comics>();
+  Future<List<Comics>> futureComicsList;
+
+  @override
+  void initState() {
+    super.initState();
+    futureComicsList = getComics();
+  }
+
   @override
   Widget build(BuildContext context) {
-    List<Comics> hqList = new List<Comics>();
 
     return FutureBuilder(
-      future: getComics(),
+      future: futureComicsList,
       initialData: [],
       builder: (_, snapshot) {
         if (snapshot.data == null) {
           return Center(
             child: CircularProgressIndicator(),
           );
-        } else if (snapshot.data.length > 0) {
+        } else if (snapshot.hasData) {
           hqList.clear();
 
           snapshot.data.forEach((element) {
             List<ComicsPage> pagesForThisHq = new List<ComicsPage>();
 
-            element.data['pages'].forEach((page) {
+            element['pages'].forEach((page) {
               pagesForThisHq
                   .add(ComicsPage(page['image'].toString(), page['page']));
             });
 
             hqList.add(Comics(
-                element.data['name'], element.data['edition'], pagesForThisHq));
+                element['name'], element['edition'], pagesForThisHq));
           });
 
           return Container(

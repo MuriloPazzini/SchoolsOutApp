@@ -3,9 +3,9 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:schools_out/entities/user.dart';
 import 'package:schools_out/pages/home.dart';
-import 'package:schools_out/pages/loggedInHome.dart';
-import 'package:schools_out/pages/loggedinHome.dart';
+import 'package:schools_out/services/userService.dart';
 import 'package:schools_out/pages/signUp.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -126,27 +126,20 @@ class _LoggedOutHomepage extends State<LoggedOutHomepage> {
                                                       seconds: 45)))
                                               .user;
 
-                                          var firestore = Firestore.instance;
-
-                                          QuerySnapshot userQn = await firestore
-                                              .collection("users")
-                                              .where('id', isEqualTo: user.uid)
-                                              .getDocuments();
-
-                                          var userInfo = userQn.documents;
+                                          User userInfo = await getUserById(user.uid);
 
                                           await SharedPreferences.getInstance()
                                               .then((SharedPreferences sp) {
                                             prefs = sp;
                                             prefs.setString('userId', user.uid);
                                             prefs.setString(
-                                                'role', userInfo[0]['role']);
+                                                'role', userInfo.role);
                                             prefs.setString('nickname',
-                                                userInfo[0]['nickname']);
+                                                userInfo.nickname);
                                             prefs.setString('aboutMe',
-                                                userInfo[0]['aboutMe']);
+                                                userInfo.aboutMe);
                                             prefs.setString('photoUrl',
-                                                userInfo[0]['photoUrl']);
+                                                userInfo.photoUrl);
                                           });
 
                                           Navigator.of(context).pop();
