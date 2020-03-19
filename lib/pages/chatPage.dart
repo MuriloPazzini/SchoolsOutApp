@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -20,7 +21,6 @@ class ChatPage extends StatefulWidget {
 
 class _ChatPageState extends State<ChatPage> {
   Future<List<String>> futureMessageHistory;
-
   SocketIO socketIO;
   List<Message> messages = new List<Message>();
   double height, width;
@@ -57,11 +57,7 @@ class _ChatPageState extends State<ChatPage> {
       //Convert the JSON data received into a Map
       Map<String, dynamic> data = json.decode(jsonData);
       this.setState(() => messages.add(new Message(data['message'], false)));
-      scrollController.animateTo(
-        scrollController.position.maxScrollExtent,
-        duration: Duration(milliseconds: 600),
-        curve: Curves.ease,
-      );
+      Timer(Duration(milliseconds: 1000), () => scrollController.jumpTo(scrollController.position.maxScrollExtent));
     });
     //Connect to the socket
     socketIO.connect();
@@ -106,7 +102,7 @@ class _ChatPageState extends State<ChatPage> {
 
   Widget buildMessageList() {
     return Container(
-      height: height * 0.74,
+      height: height * 0.72,
       width: width,
       child: ListView.builder(
         controller: scrollController,
@@ -149,11 +145,7 @@ class _ChatPageState extends State<ChatPage> {
               () => messages.add(new Message(textController.text, true)));
           textController.text = '';
           //Scrolldown the list to show the latest message
-          scrollController.animateTo(
-            scrollController.position.maxScrollExtent,
-            duration: Duration(milliseconds: 600),
-            curve: Curves.ease,
-          );
+          Timer(Duration(milliseconds: 1000), () => scrollController.jumpTo(scrollController.position.maxScrollExtent));
         }
       },
       child: Icon(
@@ -197,10 +189,10 @@ class _ChatPageState extends State<ChatPage> {
             for (var i = 0; i < oldMessages.length; i++) {
               messages.add(new Message(oldMessages[i], false));
             }
+            Timer(Duration(milliseconds: 100), () => scrollController.jumpTo(scrollController.position.maxScrollExtent));
           }
 
           return Scaffold(
-            bottomNavigationBar: buildInputArea(),
             appBar: AppBar(
               iconTheme: new IconThemeData(color: Colors.white),
               centerTitle: true,
@@ -216,6 +208,7 @@ class _ChatPageState extends State<ChatPage> {
                 children: <Widget>[
                   SizedBox(height: height * 0.05),
                   buildMessageList(),
+                  buildInputArea(),
                 ],
               ),
             ),
