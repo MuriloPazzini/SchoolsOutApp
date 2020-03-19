@@ -88,45 +88,6 @@ class _hqSliderState extends State<hqSlider> {
               }).toList()),
             ),
           );
-
-          return CarouselSlider(
-              autoPlay: true,
-              viewportFraction: 1.0,
-              aspectRatio: 0.9,
-              enlargeCenterPage: false,
-              items: hqList.map((hq) {
-                return Builder(
-                  builder: (BuildContext context) {
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        child: GestureDetector(onTap: () {
-                          Navigator.push<Widget>(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ComicsReadingPage(
-                                hq,
-                              ),
-                            ),
-                          );
-                        }),
-                        decoration: BoxDecoration(
-                            image: DecorationImage(
-                                image:
-                                    NetworkImage(hq.pages[0].image, scale: 0.5),
-                                fit: BoxFit.cover),
-                            borderRadius: BorderRadius.circular(12),
-                            boxShadow: [
-                              BoxShadow(
-                                  offset: Offset(0.2, 1.0),
-                                  blurRadius: 2,
-                                  color: Colors.grey)
-                            ]),
-                      ),
-                    );
-                  },
-                );
-              }).toList());
         } else {
           return Center(
             child: CircularProgressIndicator(),

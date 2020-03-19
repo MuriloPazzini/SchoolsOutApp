@@ -123,12 +123,14 @@ class _menuState extends State<menu> {
                             padding: EdgeInsets.only(top: 20.0),
                             child: RawMaterialButton(
                               onPressed: () async {
-                                Navigator.of(context).pop();
-                                Navigator.push(
-                                    context,
-                                    new MaterialPageRoute(
-                                        builder: (BuildContext context) =>
-                                        new ChatPage()));
+                                Navigator.push<Widget>(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ChatPage(
+                                      snapshot.data,
+                                    ),
+                                  ),
+                                );
                               },
                               child: new Image.asset(
                                 "assets/logo.png",
@@ -280,12 +282,7 @@ class _menuState extends State<menu> {
                             padding: EdgeInsets.only(top: 20.0),
                             child: RawMaterialButton(
                               onPressed: () async {
-                                Navigator.of(context).pop();
-                                Navigator.push(
-                                    context,
-                                    new MaterialPageRoute(
-                                        builder: (BuildContext context) =>
-                                        new ChatPage()));
+
                               },
                               child: new Image.asset(
                                 "assets/logo.png",

@@ -3,15 +3,26 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_socket_io/flutter_socket_io.dart';
 import 'package:flutter_socket_io/socket_io_manager.dart';
+import 'package:schools_out/entities/message.dart';
+import 'package:schools_out/entities/user.dart';
+import 'package:schools_out/services/messageService.dart';
+
+bool isInitialized = true;
 
 class ChatPage extends StatefulWidget {
+  final User user;
+
+  const ChatPage(this.user);
+
   @override
   _ChatPageState createState() => _ChatPageState();
 }
 
 class _ChatPageState extends State<ChatPage> {
+  Future<List<String>> futureMessageHistory;
+
   SocketIO socketIO;
-  List<String> messages;
+  List<Message> messages = new List<Message>();
   double height, width;
   TextEditingController textController;
   ScrollController scrollController;
@@ -25,8 +36,11 @@ class _ChatPageState extends State<ChatPage> {
 
   @override
   void initState() {
+    isInitialized = true;
+
+    futureMessageHistory = getMessageHistory();
     //Initializing the message list
-    messages = List<String>();
+    messages = List<Message>();
     //Initializing the TextEditingController and ScrollController
     textController = TextEditingController();
     scrollController = ScrollController();
@@ -37,11 +51,12 @@ class _ChatPageState extends State<ChatPage> {
     );
     //Call init before doing anything with socket
     socketIO.init();
+
     //Subscribe to an event to listen to
     socketIO.subscribe('receive_message', (jsonData) {
       //Convert the JSON data received into a Map
       Map<String, dynamic> data = json.decode(jsonData);
-      this.setState(() => messages.add(data['message']));
+      this.setState(() => messages.add(new Message(data['message'], false)));
       scrollController.animateTo(
         scrollController.position.maxScrollExtent,
         duration: Duration(milliseconds: 600),
@@ -54,21 +69,39 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   Widget buildSingleMessage(int index) {
-    return Container(
-      alignment: Alignment.centerLeft,
-      child: Container(
-        padding: const EdgeInsets.all(20.0),
-        margin: const EdgeInsets.only(bottom: 20.0, left: 20.0),
-        decoration: BoxDecoration(
-          color: Colors.deepPurple,
-          borderRadius: BorderRadius.circular(20.0),
+    if (messages[index].isMine) {
+      return Container(
+        alignment: Alignment.centerRight,
+        child: Container(
+          padding: const EdgeInsets.all(20.0),
+          margin: const EdgeInsets.only(bottom: 20.0, right: 20.0),
+          decoration: BoxDecoration(
+            color: Colors.blueGrey[600],
+            borderRadius: BorderRadius.circular(20.0),
+          ),
+          child: Text(
+            messages[index].data,
+            style: TextStyle(color: Colors.white, fontSize: 15.0),
+          ),
         ),
-        child: Text(
-          messages[index],
-          style: TextStyle(color: Colors.white, fontSize: 15.0),
+      );
+    } else {
+      return Container(
+        alignment: Alignment.centerLeft,
+        child: Container(
+          padding: const EdgeInsets.all(20.0),
+          margin: const EdgeInsets.only(bottom: 20.0, left: 20.0),
+          decoration: BoxDecoration(
+            color: Colors.deepPurple,
+            borderRadius: BorderRadius.circular(20.0),
+          ),
+          child: Text(
+            messages[index].data,
+            style: TextStyle(color: Colors.white, fontSize: 15.0),
+          ),
         ),
-      ),
-    );
+      );
+    }
   }
 
   Widget buildMessageList() {
@@ -92,7 +125,7 @@ class _ChatPageState extends State<ChatPage> {
       margin: const EdgeInsets.only(left: 40.0),
       child: TextField(
         decoration: InputDecoration.collapsed(
-          hintText: 'Send a message...',
+          hintText: 'Escreva sua mensagem...',
         ),
         controller: textController,
       ),
@@ -105,11 +138,15 @@ class _ChatPageState extends State<ChatPage> {
       onPressed: () {
         //Check if the textfield has text or not
         if (textController.text.isNotEmpty) {
+          var messageWithUser =
+              widget.user.nickname + ': ' + textController.text;
+
           //Send the message as JSON data to send_message event
           socketIO.sendMessage(
-              'send_message', json.encode({'message': textController.text}));
+              'send_message', json.encode({'message': messageWithUser}));
           //Add the message to the list
-          this.setState(() => messages.add(textController.text));
+          this.setState(
+              () => messages.add(new Message(textController.text, true)));
           textController.text = '';
           //Scrolldown the list to show the latest message
           scrollController.animateTo(
@@ -143,26 +180,84 @@ class _ChatPageState extends State<ChatPage> {
   Widget build(BuildContext context) {
     height = MediaQuery.of(context).size.height;
     width = MediaQuery.of(context).size.width;
-    return Scaffold(
-      appBar: AppBar(
-        iconTheme: new IconThemeData(color: Colors.white),
-        centerTitle: true,
-        title: Text(
-          "School's Out Chat",
-          style: TextStyle(
-              color: Colors.white, fontSize: 28, fontFamily: 'Toontime'),
-        ),
-        backgroundColor: Colors.blueGrey[600],
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            SizedBox(height: height * 0.05),
-            buildMessageList(),
-            buildInputArea(),
-          ],
-        ),
-      ),
+
+    return FutureBuilder(
+      future: futureMessageHistory,
+      initialData: [],
+      builder: (_, snapshot) {
+        if (snapshot.data == null) {
+          return Scaffold(
+              body: Center(
+            child: CircularProgressIndicator(),
+          ));
+        } else if (snapshot.data.length > 0) {
+          if (isInitialized) {
+            var oldMessages = snapshot.data;
+            isInitialized = false;
+            for (var i = 0; i < oldMessages.length; i++) {
+              messages.add(new Message(oldMessages[i], false));
+            }
+          }
+
+          return Scaffold(
+            bottomNavigationBar: buildInputArea(),
+            appBar: AppBar(
+              iconTheme: new IconThemeData(color: Colors.white),
+              centerTitle: true,
+              title: Text(
+                "School's Out Chat",
+                style: TextStyle(
+                    color: Colors.white, fontSize: 28, fontFamily: 'Toontime'),
+              ),
+              backgroundColor: Colors.blueGrey[600],
+            ),
+            body: SingleChildScrollView(
+              child: Column(
+                children: <Widget>[
+                  SizedBox(height: height * 0.05),
+                  buildMessageList(),
+                ],
+              ),
+            ),
+          );
+        } else {
+          return Scaffold(
+            appBar: AppBar(
+              iconTheme: new IconThemeData(color: Colors.white),
+              centerTitle: true,
+              title: Text(
+                "School's Out Chat",
+                style: TextStyle(
+                    color: Colors.white, fontSize: 28, fontFamily: 'Toontime'),
+              ),
+              backgroundColor: Colors.blueGrey[600],
+            ),
+            bottomNavigationBar: buildInputArea(),
+            body: SingleChildScrollView(
+              child: Column(
+                children: <Widget>[
+                  SizedBox(height: height * 0.05),
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    child: Container(
+                      padding: const EdgeInsets.all(20.0),
+                      margin: const EdgeInsets.only(bottom: 20.0, left: 20.0),
+                      decoration: BoxDecoration(
+                        color: Colors.deepPurple,
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                      child: Text(
+                        'Carregando Mensagens antigas...',
+                        style: TextStyle(color: Colors.white, fontSize: 15.0),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        }
+      },
     );
   }
 }
