@@ -57,7 +57,10 @@ class _ChatPageState extends State<ChatPage> {
       //Convert the JSON data received into a Map
       Map<String, dynamic> data = json.decode(jsonData);
       this.setState(() => messages.add(new Message(data['message'], false)));
-      Timer(Duration(milliseconds: 1000), () => scrollController.jumpTo(scrollController.position.maxScrollExtent));
+      Timer(
+          Duration(milliseconds: 1000),
+          () => scrollController
+              .jumpTo(scrollController.position.maxScrollExtent));
     });
     //Connect to the socket
     socketIO.connect();
@@ -145,7 +148,10 @@ class _ChatPageState extends State<ChatPage> {
               () => messages.add(new Message(textController.text, true)));
           textController.text = '';
           //Scrolldown the list to show the latest message
-          Timer(Duration(milliseconds: 1000), () => scrollController.jumpTo(scrollController.position.maxScrollExtent));
+          Timer(
+              Duration(milliseconds: 1000),
+              () => scrollController
+                  .jumpTo(scrollController.position.maxScrollExtent));
         }
       },
       child: Icon(
@@ -189,7 +195,10 @@ class _ChatPageState extends State<ChatPage> {
             for (var i = 0; i < oldMessages.length; i++) {
               messages.add(new Message(oldMessages[i], false));
             }
-            Timer(Duration(milliseconds: 100), () => scrollController.jumpTo(scrollController.position.maxScrollExtent));
+            Timer(
+                Duration(milliseconds: 100),
+                () => scrollController
+                    .jumpTo(scrollController.position.maxScrollExtent));
           }
 
           return Scaffold(
@@ -214,41 +223,69 @@ class _ChatPageState extends State<ChatPage> {
             ),
           );
         } else {
-          return Scaffold(
-            appBar: AppBar(
-              iconTheme: new IconThemeData(color: Colors.white),
-              centerTitle: true,
-              title: Text(
-                "School's Out Chat",
-                style: TextStyle(
-                    color: Colors.white, fontSize: 28, fontFamily: 'Toontime'),
+          if (messages.length > 0) {
+            return Scaffold(
+              appBar: AppBar(
+                iconTheme: new IconThemeData(color: Colors.white),
+                centerTitle: true,
+                title: Text(
+                  "School's Out Chat",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 28,
+                      fontFamily: 'Toontime'),
+                ),
+                backgroundColor: Colors.blueGrey[600],
               ),
-              backgroundColor: Colors.blueGrey[600],
-            ),
-            bottomNavigationBar: buildInputArea(),
-            body: SingleChildScrollView(
-              child: Column(
-                children: <Widget>[
-                  SizedBox(height: height * 0.05),
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    child: Container(
-                      padding: const EdgeInsets.all(20.0),
-                      margin: const EdgeInsets.only(bottom: 20.0, left: 20.0),
-                      decoration: BoxDecoration(
-                        color: Colors.deepPurple,
-                        borderRadius: BorderRadius.circular(20.0),
-                      ),
-                      child: Text(
-                        'Carregando Mensagens antigas...',
-                        style: TextStyle(color: Colors.white, fontSize: 15.0),
+              body: SingleChildScrollView(
+                child: Column(
+                  children: <Widget>[
+                    SizedBox(height: height * 0.05),
+                    buildMessageList(),
+                    buildInputArea(),
+                  ],
+                ),
+              ),
+            );
+          } else {
+            return Scaffold(
+              appBar: AppBar(
+                iconTheme: new IconThemeData(color: Colors.white),
+                centerTitle: true,
+                title: Text(
+                  "School's Out Chat",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 28,
+                      fontFamily: 'Toontime'),
+                ),
+                backgroundColor: Colors.blueGrey[600],
+              ),
+              bottomNavigationBar: buildInputArea(),
+              body: SingleChildScrollView(
+                child: Column(
+                  children: <Widget>[
+                    SizedBox(height: height * 0.05),
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      child: Container(
+                        padding: const EdgeInsets.all(20.0),
+                        margin: const EdgeInsets.only(bottom: 20.0, left: 20.0),
+                        decoration: BoxDecoration(
+                          color: Colors.deepPurple,
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
+                        child: Text(
+                          'Carregando Mensagens antigas...',
+                          style: TextStyle(color: Colors.white, fontSize: 15.0),
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          );
+            );
+          }
         }
       },
     );
