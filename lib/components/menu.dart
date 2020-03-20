@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:schools_out/entities/user.dart';
 import 'package:schools_out/pages/chatPage.dart';
+import 'package:schools_out/pages/comicsList.dart';
 import 'package:schools_out/pages/loggedInHome.dart';
 import 'package:schools_out/pages/loggedOutHome.dart';
 import 'package:schools_out/pages/quizList.dart';
@@ -89,6 +90,34 @@ class _menuState extends State<menu> {
                           Padding(
                             padding: EdgeInsets.only(top: 12.0),
                             child: Text('Home',
+                                style: TextStyle(fontFamily: 'Toontime')),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(top: 20.0),
+                            child: RawMaterialButton(
+                              onPressed: () async {
+                                Navigator.of(context).pop();
+                                Navigator.push(
+                                    context,
+                                    new MaterialPageRoute(
+                                        builder: (BuildContext context) =>
+                                        new ComicsList()));
+                              },
+                              child: new Image.asset(
+                                "assets/logo.png",
+                                fit: BoxFit.contain,
+                                width: 20.0,
+                                height: 20.0,
+                              ),
+                              shape: new CircleBorder(),
+                              elevation: 2.0,
+                              fillColor: Colors.white,
+                              padding: const EdgeInsets.all(15.0),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(top: 12.0),
+                            child: Text('Livros',
                                 style: TextStyle(fontFamily: 'Toontime')),
                           ),
                           Padding(
@@ -248,6 +277,34 @@ class _menuState extends State<menu> {
                           Padding(
                             padding: EdgeInsets.only(top: 12.0),
                             child: Text('Home',
+                                style: TextStyle(fontFamily: 'Toontime')),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(top: 20.0),
+                            child: RawMaterialButton(
+                              onPressed: () async {
+                                Navigator.of(context).pop();
+                                Navigator.push(
+                                    context,
+                                    new MaterialPageRoute(
+                                        builder: (BuildContext context) =>
+                                        new ComicsList()));
+                              },
+                              child: new Image.asset(
+                                "assets/logo.png",
+                                fit: BoxFit.contain,
+                                width: 20.0,
+                                height: 20.0,
+                              ),
+                              shape: new CircleBorder(),
+                              elevation: 2.0,
+                              fillColor: Colors.white,
+                              padding: const EdgeInsets.all(15.0),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(top: 12.0),
+                            child: Text('Livros',
                                 style: TextStyle(fontFamily: 'Toontime')),
                           ),
                           Padding(
