@@ -3,7 +3,7 @@ class User {
   String nickname;
   String aboutMe;
   String photoUrl;
-  String role;
+  List<String> owned;
 
-  User(this.id, this.nickname, this.aboutMe, this.photoUrl, this.role);
+  User(this.id, this.nickname, this.aboutMe, this.photoUrl, this.owned);
 }

@@ -47,7 +47,7 @@ class _comicsSliderState extends State<comicsSlider> {
             });
 
             comicsList.add(Comics(
-                element.name, element.edition, pagesForThisHq));
+                element.name, element.edition, pagesForThisHq, element.description, element.price));
           });
 
           return Container(

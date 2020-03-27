@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:schools_out/components/menu.dart';
 import 'package:schools_out/entities/comics.dart';
 import 'package:schools_out/entities/comicsPage.dart';
+import 'package:schools_out/pages/comicsBuyingPage.dart';
 import 'package:schools_out/services/comicsService.dart';
 
 import 'comicsReadingPage.dart';
@@ -44,7 +45,7 @@ class ComicsListState extends State<ComicsList> {
       Navigator.push<Widget>(
         context,
         MaterialPageRoute(
-          builder: (context) => ComicsReadingPage(
+          builder: (context) => ComicsBuyingPage(
             hq,
           ),
         ),
@@ -132,7 +133,7 @@ class ComicsListState extends State<ComicsList> {
             });
 
             comicsList
-                .add(Comics(element.name, element.edition, pagesForThisHq));
+                .add(Comics(element.name, element.edition, pagesForThisHq, element.description, element.price));
           });
 
           return Scaffold(

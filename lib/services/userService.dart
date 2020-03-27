@@ -16,12 +16,16 @@ Future<User> getLoggedUser() async {
 
     var document = json.decode(response.body);
 
+    var owned = new List<String>();
+
+    document['owned'].forEach((ownedId) => owned.add(ownedId));
+
     var currentLoggedUser = new User(
         document['id'],
         document['nickname'],
         document['aboutMe'],
         document['photoUrl'],
-        document['role']);
+        owned);
 
     return currentLoggedUser;
 
@@ -34,7 +38,7 @@ Future<User> RegisterNewUser (User user) async {
   map["photoUrl"] = user.photoUrl;
   map["aboutMe"] = user.aboutMe;
   map["nickname"] = user.nickname;
-  map["role"] = user.role;
+  map["owned"] = user.owned;
 
   Map<String, String> requestHeaders = {
     'Content-type': 'application/json',

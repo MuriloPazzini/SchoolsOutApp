@@ -20,6 +20,7 @@ class ChatPage extends StatefulWidget {
 }
 
 class _ChatPageState extends State<ChatPage> {
+  bool isInitialized = true;
   Future<List<String>> futureMessageHistory;
   SocketIO socketIO;
   List<Message> messages = new List<Message>();
@@ -29,6 +30,8 @@ class _ChatPageState extends State<ChatPage> {
 
   @override
   void dispose() {
+    socketIO.sendMessage(
+        'send_message', json.encode({'message': widget.user.nickname + ' se desconectou'}));
     socketIO.unSubscribesAll();
     socketIO.disconnect();
     super.dispose();
@@ -47,7 +50,7 @@ class _ChatPageState extends State<ChatPage> {
     //Creating the socket
     socketIO = SocketIOManager().createSocketIO(
       'https://schools-out-backend.herokuapp.com',
-      '/',
+      '/chat',
     );
     //Call init before doing anything with socket
     socketIO.init();

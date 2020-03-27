@@ -45,7 +45,7 @@ class _hqSliderState extends State<hqSlider> {
             });
 
             hqList.add(Comics(
-                element['name'], element['edition'], pagesForThisHq));
+                element['name'], element['edition'], pagesForThisHq, element['description'], element['price']));
           });
 
           return Container(

@@ -87,13 +87,13 @@ class _SignUpPageState extends State<SignUpPage> {
     String nicknameValue = nickNameController.text;
     String aboutMeValue = aboutMeController.text;
 
-    User newUser = new User(userId, nicknameValue, aboutMeValue, photoUrlRef, 'free');
+    User newUser = new User(userId, nicknameValue, aboutMeValue, photoUrlRef, new List<String>());
 
     await RegisterNewUser(newUser).then((data) async {
       await SharedPreferences.getInstance().then((SharedPreferences sp) {
         prefs = sp;
         prefs.setString('userId', userId);
-        prefs.setString('role', 'free');
+        prefs.setStringList('owned', new List<String>());
         prefs.setString('nickname', nicknameValue);
         prefs.setString('aboutMe', aboutMeValue);
         prefs.setString('photoUrl', photoUrlRef);

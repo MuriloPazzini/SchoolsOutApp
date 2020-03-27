@@ -132,8 +132,8 @@ class _LoggedOutHomepage extends State<LoggedOutHomepage> {
                                               .then((SharedPreferences sp) {
                                             prefs = sp;
                                             prefs.setString('userId', user.uid);
-                                            prefs.setString(
-                                                'role', userInfo.role);
+                                            prefs.setStringList(
+                                                'owned', userInfo.owned);
                                             prefs.setString('nickname',
                                                 userInfo.nickname);
                                             prefs.setString('aboutMe',
