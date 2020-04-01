@@ -24,7 +24,6 @@ class _hqSliderState extends State<hqSlider> {
 
   @override
   Widget build(BuildContext context) {
-
     return FutureBuilder(
       future: futureComicsList,
       initialData: [],
@@ -33,20 +32,22 @@ class _hqSliderState extends State<hqSlider> {
           return Center(
             child: CircularProgressIndicator(),
           );
-        } else if (snapshot.hasData) {
+        } else if (snapshot.data.length > 0) {
           hqList.clear();
 
-          snapshot.data.forEach((element) {
-            List<ComicsPage> pagesForThisHq = new List<ComicsPage>();
+          List<ComicsPage> pagesForThisHq = new List<ComicsPage>();
 
-            element['pages'].forEach((page) {
-              pagesForThisHq
-                  .add(ComicsPage(page['image'].toString(), page['page']));
-            });
-
-            hqList.add(Comics(
-                element['name'], element['edition'], pagesForThisHq, element['description'], element['price']));
+          snapshot.data[0].pages.forEach((page) {
+            pagesForThisHq.add(ComicsPage(page.image.toString(), page.page));
           });
+
+          hqList.add(Comics(
+              snapshot.data[0].name,
+              snapshot.data[0].edition,
+              pagesForThisHq,
+              snapshot.data[0].description,
+              snapshot.data[0].price,
+              snapshot.data[0].id));
 
           return Container(
             child: SingleChildScrollView(

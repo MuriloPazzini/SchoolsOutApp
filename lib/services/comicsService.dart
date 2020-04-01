@@ -25,7 +25,7 @@ Future<List<Comics>> getHqs() async {
       });
 
       Comics currentComics =
-          new Comics(element['name'], element['edition'], comicsPages, element['description'], element['price']);
+          new Comics(element['name'], element['edition'], comicsPages, element['description'], element['price'] + .0, element['_id']);
 
       comics.add(currentComics);
     }
@@ -50,7 +50,7 @@ Future<List<Comics>> getComics() async {
     });
 
     Comics currentComics =
-        new Comics(element['name'], element['edition'], comicsPages, element['description'], element['price'] + .0);
+    new Comics(element['name'], element['edition'], comicsPages, element['description'], element['price'] +.0, element['_id']);
 
     comics.add(currentComics);
   });

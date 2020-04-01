@@ -37,10 +37,8 @@ dependencies:
   flutter_socket_io: ^0.6.0
   socket_io_client: ^0.9.9
   socket_io: ^0.9.3
-
-
-
-
+  splashscreen: ^1.2.0
+  assets_audio_player: ^1.2.3
 
 
   # The following adds the Cupertino Icons font to your application.

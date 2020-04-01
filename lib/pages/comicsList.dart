@@ -133,7 +133,7 @@ class ComicsListState extends State<ComicsList> {
             });
 
             comicsList
-                .add(Comics(element.name, element.edition, pagesForThisHq, element.description, element.price));
+                .add(Comics(element.name, element.edition, pagesForThisHq, element.description, element.price, element.id));
           });
 
           return Scaffold(

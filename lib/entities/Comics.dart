@@ -7,6 +7,7 @@ class Comics {
   List<int> previewPages;
   double price;
   String description;
+  String id;
 
-  Comics(this.name, this.edition, this.pages, this.description, this.price);
+  Comics(this.name, this.edition, this.pages, this.description, this.price, this.id);
 }
