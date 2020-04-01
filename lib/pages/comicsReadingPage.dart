@@ -100,7 +100,11 @@ class _ComicsReadingPage extends State<ComicsReadingPage> {
                       hintText: "Página que deseja ir",
                       hintStyle: TextStyle(fontFamily: 'Toontime'),
                       border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(32.0))),
+                          borderRadius: BorderRadius.circular(32.0),
+                          borderSide: new BorderSide(width: 1, color: Colors.teal)),
+                      focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(32.0),
+                          borderSide: new BorderSide(width: 1, color: Colors.teal))),
                 ),
               ),
             )

@@ -42,6 +42,12 @@ class _SplashScreenComponentState extends State<SplashScreenComponent> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    assetsAudioPlayer.stop();
+  }
+
+  @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;

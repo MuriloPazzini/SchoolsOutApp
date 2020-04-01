@@ -40,22 +40,15 @@ class _comicsSliderState extends State<comicsSlider> {
         } else if (snapshot.data.length > 1) {
           comicsList.clear();
 
-          List<ComicsPage> pagesForThisHq = new List<ComicsPage>();
-
           snapshot.data[0].forEach((element) {
+            List<ComicsPage> pagesForThisHq = new List<ComicsPage>();
             element.pages.forEach((page) {
               pagesForThisHq.add(ComicsPage(page.image.toString(), page.page));
             });
 
-            comicsList.add(Comics(
-                element.name,
-                element.edition,
-                pagesForThisHq,
-                element.description,
-                element.price,
-                element.id));
+            comicsList.add(Comics(element.name, element.edition, pagesForThisHq,
+                element.description, element.price, element.id));
           });
-
 
           return Container(
             child: SingleChildScrollView(
