@@ -26,7 +26,12 @@ class _LoggedOutHomepage extends State<LoggedOutHomepage> {
         contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         hintText: "E-mail",
         hintStyle: TextStyle(fontFamily: 'Toontime'),
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
+        border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(32.0),
+            borderSide: new BorderSide(width: 1, color: Colors.teal)),
+        focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(32.0),
+            borderSide: new BorderSide(width: 1, color: Colors.teal))),
   );
   final passwordField = TextField(
     controller: passwordController,
@@ -35,7 +40,12 @@ class _LoggedOutHomepage extends State<LoggedOutHomepage> {
         contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         hintText: "Senha",
         hintStyle: TextStyle(fontFamily: 'Toontime'),
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
+        border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(32.0),
+            borderSide: new BorderSide(width: 1, color: Colors.teal)),
+        focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(32.0),
+            borderSide: new BorderSide(width: 1, color: Colors.teal))),
   );
 
   @override
@@ -68,14 +78,15 @@ class _LoggedOutHomepage extends State<LoggedOutHomepage> {
         backgroundColor: Colors.blueGrey[600],
       ),
       body: SingleChildScrollView(
-        child: Center(
-          child: Container(
-            color: Colors.white,
+        child: Container(
+          color: Colors.white,
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
+          child: Center(
             child: Padding(
-              padding: const EdgeInsets.all(36.0),
+              padding: const EdgeInsets.fromLTRB(36.0, 56.0, 36.0, 36.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   SizedBox(
                     height: 155.0,
@@ -101,145 +112,162 @@ class _LoggedOutHomepage extends State<LoggedOutHomepage> {
                                 ? Center(
                                     child: CircularProgressIndicator(),
                                   )
-                                : Material(
-                                    elevation: 5.0,
-                                    borderRadius: BorderRadius.circular(30.0),
-                                    color: Colors.blueGrey[600],
-                                    child: MaterialButton(
-                                      padding: EdgeInsets.fromLTRB(
-                                          20.0, 15.0, 20.0, 15.0),
-                                      onPressed: () async {
-                                        try {
-                                          setState(() {
-                                            isLoading = true;
-                                          });
+                                : Padding(
+                                    padding: EdgeInsets.fromLTRB(
+                                        0.0, 12.0, 0.0, 0.0),
+                                    child: SizedBox(
+                                      width: 120,
+                                      child: Material(
+                                        elevation: 5.0,
+                                        borderRadius:
+                                            BorderRadius.circular(30.0),
+                                        color: Colors.blueGrey[600],
+                                        child: MaterialButton(
+                                          padding: EdgeInsets.fromLTRB(
+                                              20.0, 15.0, 20.0, 15.0),
+                                          onPressed: () async {
+                                            try {
+                                              setState(() {
+                                                isLoading = true;
+                                              });
 
-                                          FirebaseUser user = (await FirebaseAuth
-                                                  .instance
-                                                  .signInWithEmailAndPassword(
-                                                      email:
-                                                          emailController.text,
-                                                      password:
-                                                          passwordController
-                                                              .text)
-                                                  .timeout(new Duration(
-                                                      seconds: 45)))
-                                              .user;
+                                              FirebaseUser user = (await FirebaseAuth
+                                                      .instance
+                                                      .signInWithEmailAndPassword(
+                                                          email: emailController
+                                                              .text,
+                                                          password:
+                                                              passwordController
+                                                                  .text)
+                                                      .timeout(new Duration(
+                                                          seconds: 45)))
+                                                  .user;
 
-                                          User userInfo = await getUserById(user.uid);
+                                              User userInfo =
+                                                  await getUserById(user.uid);
 
-                                          await SharedPreferences.getInstance()
-                                              .then((SharedPreferences sp) {
-                                            prefs = sp;
-                                            prefs.setString('userId', user.uid);
-                                            prefs.setStringList(
-                                                'owned', userInfo.owned);
-                                            prefs.setString('nickname',
-                                                userInfo.nickname);
-                                            prefs.setString('aboutMe',
-                                                userInfo.aboutMe);
-                                            prefs.setString('photoUrl',
-                                                userInfo.photoUrl);
-                                          });
+                                              await SharedPreferences
+                                                      .getInstance()
+                                                  .then((SharedPreferences sp) {
+                                                prefs = sp;
+                                                prefs.setString(
+                                                    'userId', user.uid);
+                                                prefs.setStringList(
+                                                    'owned', userInfo.owned);
+                                                prefs.setString('nickname',
+                                                    userInfo.nickname);
+                                                prefs.setString('aboutMe',
+                                                    userInfo.aboutMe);
+                                                prefs.setString('photoUrl',
+                                                    userInfo.photoUrl);
+                                              });
 
-                                          Navigator.of(context).pop();
-                                          Navigator.push(
-                                            context,
-                                            new MaterialPageRoute(
-                                              builder: (BuildContext context) =>
-                                                  new HomePage(),
-                                            ),
-                                          );
-                                        } catch (e) {
-                                          setState(() {
-                                            isLoading = false;
-                                          });
-                                          String errorToShow;
-
-                                          if (Platform.isAndroid) {
-                                            switch (e.message) {
-                                              case 'There is no user record corresponding to this identifier. The user may have been deleted.':
-                                                errorToShow =
-                                                    'Usuário não encontrado';
-                                                break;
-                                              case 'The password is invalid or the user does not have a password.':
-                                                errorToShow =
-                                                    'Senha é inválida';
-                                                break;
-                                              case 'A network error (such as timeout, interrupted connection or unreachable host) has occurred.':
-                                                errorToShow =
-                                                    'Problema com conexão';
-                                                break;
-                                              // ...
-                                              default:
-                                                errorToShow =
-                                                    'Ocorreu um problema ao autenticar';
-                                            }
-                                          } else if (Platform.isIOS) {
-                                            switch (e.code) {
-                                              case 'Error 17011':
-                                                errorToShow =
-                                                    'Usuário não encontrado';
-                                                break;
-                                              case 'Error 17009':
-                                                errorToShow =
-                                                    'Senha é inválida';
-                                                break;
-                                              case 'Error 17020':
-                                                errorToShow =
-                                                    'Problema com conexão';
-                                                break;
-                                              // ...
-                                              default:
-                                                errorToShow =
-                                                    'Ocorreu um problema ao autenticar';
-                                            }
-                                          }
-                                          return showDialog(
-                                            context: context,
-                                            builder: (context) {
-                                              return AlertDialog(
-                                                // Retrieve the text the user has entered by using the
-                                                // TextEditingController.
-                                                content: Text(errorToShow,
-                                                    style: TextStyle(
-                                                        fontFamily: 'Toontime',
-                                                        color: Colors.white)),
+                                              Navigator.of(context).pop();
+                                              Navigator.push(
+                                                context,
+                                                new MaterialPageRoute(
+                                                  builder:
+                                                      (BuildContext context) =>
+                                                          new HomePage(),
+                                                ),
                                               );
-                                            },
-                                          );
-                                        }
-                                      },
-                                      child: Text(
-                                        "Login",
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                            fontFamily: 'Toontime',
-                                            color: Colors.white),
+                                            } catch (e) {
+                                              setState(() {
+                                                isLoading = false;
+                                              });
+                                              String errorToShow;
+
+                                              if (Platform.isAndroid) {
+                                                switch (e.message) {
+                                                  case 'There is no user record corresponding to this identifier. The user may have been deleted.':
+                                                    errorToShow =
+                                                        'Usuário não encontrado';
+                                                    break;
+                                                  case 'The password is invalid or the user does not have a password.':
+                                                    errorToShow =
+                                                        'Senha é inválida';
+                                                    break;
+                                                  case 'A network error (such as timeout, interrupted connection or unreachable host) has occurred.':
+                                                    errorToShow =
+                                                        'Problema com conexão';
+                                                    break;
+                                                  // ...
+                                                  default:
+                                                    errorToShow =
+                                                        'Ocorreu um problema ao autenticar';
+                                                }
+                                              } else if (Platform.isIOS) {
+                                                switch (e.code) {
+                                                  case 'Error 17011':
+                                                    errorToShow =
+                                                        'Usuário não encontrado';
+                                                    break;
+                                                  case 'Error 17009':
+                                                    errorToShow =
+                                                        'Senha é inválida';
+                                                    break;
+                                                  case 'Error 17020':
+                                                    errorToShow =
+                                                        'Problema com conexão';
+                                                    break;
+                                                  // ...
+                                                  default:
+                                                    errorToShow =
+                                                        'Ocorreu um problema ao autenticar';
+                                                }
+                                              }
+                                              return showDialog(
+                                                context: context,
+                                                builder: (context) {
+                                                  return AlertDialog(
+                                                    // Retrieve the text the user has entered by using the
+                                                    // TextEditingController.
+                                                    content: Text(errorToShow,
+                                                        style: TextStyle(
+                                                            fontFamily:
+                                                                'Toontime',
+                                                            color:
+                                                                Colors.white)),
+                                                  );
+                                                },
+                                              );
+                                            }
+                                          },
+                                          child: Text(
+                                            "Login",
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                                fontFamily: 'Toontime',
+                                                color: Colors.white),
+                                          ),
+                                        ),
                                       ),
                                     ),
                                   ),
                             Padding(
                               padding: EdgeInsets.fromLTRB(0.0, 12.0, 0.0, 0.0),
-                              child: Material(
-                                elevation: 5.0,
-                                borderRadius: BorderRadius.circular(30.0),
-                                color: Colors.blueGrey[600],
-                                child: MaterialButton(
-                                  padding: EdgeInsets.fromLTRB(
-                                      20.0, 15.0, 20.0, 15.0),
-                                  onPressed: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => SignUpPage()),
-                                    );
-                                  },
-                                  child: Text("Cadastro",
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                          fontFamily: 'Toontime',
-                                          color: Colors.white)),
+                              child: SizedBox(
+                                width: 120,
+                                child: Material(
+                                  elevation: 5.0,
+                                  borderRadius: BorderRadius.circular(30.0),
+                                  color: Colors.blueGrey[600],
+                                  child: MaterialButton(
+                                    padding: EdgeInsets.fromLTRB(
+                                        20.0, 15.0, 20.0, 15.0),
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => SignUpPage()),
+                                      );
+                                    },
+                                    child: Text("Cadastro",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            fontFamily: 'Toontime',
+                                            color: Colors.white)),
+                                  ),
                                 ),
                               ),
                             ),

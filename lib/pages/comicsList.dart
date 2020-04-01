@@ -68,13 +68,6 @@ class ComicsListState extends State<ComicsList> {
 
     }
 
-    // Query Firestore
-    _queryDb({String tag = 'favorites'}) {
-      // TODO
-    }
-
-    // Builder Functions
-
     _buildStoryPage(Comics data, bool active, User user) {
       // Animated Properties
       final double blur = active ? 20 : 0;
@@ -97,11 +90,6 @@ class ComicsListState extends State<ComicsList> {
               boxShadow: []),
         ),
       );
-    }
-
-
-    _buildButton(tag) {
-      // TODO
     }
 
     return FutureBuilder(

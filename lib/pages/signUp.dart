@@ -41,7 +41,12 @@ class _SignUpPageState extends State<SignUpPage> {
         contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         hintText: "Apelido",
         hintStyle: TextStyle(fontFamily: 'Toontime'),
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
+        border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(32.0),
+            borderSide: new BorderSide(width: 1, color: Colors.teal)),
+        focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(32.0),
+            borderSide: new BorderSide(width: 1, color: Colors.teal))),
   );
   final aboutMeField = TextField(
     controller: aboutMeController,
@@ -50,7 +55,12 @@ class _SignUpPageState extends State<SignUpPage> {
         contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         hintText: "Interesses",
         hintStyle: TextStyle(fontFamily: 'Toontime'),
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
+        border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(32.0),
+            borderSide: new BorderSide(width: 1, color: Colors.teal)),
+        focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(32.0),
+            borderSide: new BorderSide(width: 1, color: Colors.teal))),
   );
   final emailField = TextField(
     controller: emailController,
@@ -59,7 +69,12 @@ class _SignUpPageState extends State<SignUpPage> {
         contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         hintText: "E-mail",
         hintStyle: TextStyle(fontFamily: 'Toontime'),
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
+        border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(32.0),
+            borderSide: new BorderSide(width: 1, color: Colors.teal)),
+        focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(32.0),
+            borderSide: new BorderSide(width: 1, color: Colors.teal))),
   );
   final passwordField = TextField(
     controller: passwordController,
@@ -68,7 +83,12 @@ class _SignUpPageState extends State<SignUpPage> {
         contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         hintText: "Senha",
         hintStyle: TextStyle(fontFamily: 'Toontime'),
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
+        border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(32.0),
+            borderSide: new BorderSide(width: 1, color: Colors.teal)),
+        focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(32.0),
+            borderSide: new BorderSide(width: 1, color: Colors.teal))),
   );
 
   Future getImage() async {
@@ -87,7 +107,8 @@ class _SignUpPageState extends State<SignUpPage> {
     String nicknameValue = nickNameController.text;
     String aboutMeValue = aboutMeController.text;
 
-    User newUser = new User(userId, nicknameValue, aboutMeValue, photoUrlRef, new List<String>());
+    User newUser = new User(
+        userId, nicknameValue, aboutMeValue, photoUrlRef, new List<String>());
 
     await RegisterNewUser(newUser).then((data) async {
       await SharedPreferences.getInstance().then((SharedPreferences sp) {
@@ -162,26 +183,27 @@ class _SignUpPageState extends State<SignUpPage> {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-      appBar: new AppBar(
-        iconTheme: new IconThemeData(color: Colors.white),
-        centerTitle: true,
-        backgroundColor: Colors.blueGrey[600],
-        title: Text(
-          "School's Out",
-          style: TextStyle(
-              color: Colors.white, fontSize: 28, fontFamily: 'Toontime'),
+    if (isLoading) {
+      return new Scaffold(
+        appBar: new AppBar(
+          iconTheme: new IconThemeData(color: Colors.white),
+          centerTitle: true,
+          backgroundColor: Colors.blueGrey[600],
+          title: Text(
+            "Registro",
+            style: TextStyle(
+                color: Colors.white, fontSize: 28, fontFamily: 'Toontime'),
+          ),
         ),
-      ),
-      body: SingleChildScrollView(
-        child: Center(
+        body: SingleChildScrollView(
           child: Container(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
             color: Colors.white,
             child: Padding(
               padding: const EdgeInsets.all(36.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   (avatarImageFile == null)
                       ? (photoUrl != ''
@@ -243,25 +265,9 @@ class _SignUpPageState extends State<SignUpPage> {
                   SizedBox(
                     height: 35.0,
                   ),
-                  isLoading
-                      ? Center(
-                          child: CircularProgressIndicator(),
-                        )
-                      : Material(
-                          elevation: 5.0,
-                          borderRadius: BorderRadius.circular(30.0),
-                          color: Colors.blueGrey[600],
-                          child: MaterialButton(
-                            padding:
-                                EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-                            onPressed: signUp,
-                            child: Text("Cadastrar",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontFamily: 'Toontime')),
-                          ),
-                        ),
+                  Center(
+                    child: CircularProgressIndicator(),
+                  ),
                   SizedBox(
                     height: 15.0,
                   ),
@@ -270,8 +276,104 @@ class _SignUpPageState extends State<SignUpPage> {
             ),
           ),
         ),
-      ),
-    );
+      );
+    } else {
+      return new Scaffold(
+        appBar: new AppBar(
+          iconTheme: new IconThemeData(color: Colors.white),
+          centerTitle: true,
+          backgroundColor: Colors.blueGrey[600],
+          title: Text(
+            "School's Out",
+            style: TextStyle(
+                color: Colors.white, fontSize: 28, fontFamily: 'Toontime'),
+          ),
+        ),
+        floatingActionButton: new FloatingActionButton(
+          backgroundColor: Colors.blueGrey[600],
+          child: Icon(Icons.check),
+          onPressed: signUp,
+        ),
+        body: SingleChildScrollView(
+          child: Container(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+            color: Colors.white,
+            child: Padding(
+              padding: const EdgeInsets.all(36.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  (avatarImageFile == null)
+                      ? (photoUrl != ''
+                          ? Material(
+                              child: CachedNetworkImage(
+                                placeholder: (context, url) => Container(
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2.0,
+                                    valueColor: AlwaysStoppedAnimation<Color>(
+                                        Colors.blueGrey[600]),
+                                  ),
+                                  width: 90.0,
+                                  height: 90.0,
+                                  padding: EdgeInsets.all(20.0),
+                                ),
+                                imageUrl: photoUrl,
+                                width: 90.0,
+                                height: 90.0,
+                                fit: BoxFit.cover,
+                              ),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(45.0)),
+                              clipBehavior: Clip.hardEdge,
+                            )
+                          : Icon(
+                              Icons.account_circle,
+                              size: 90.0,
+                              color: Colors.grey,
+                            ))
+                      : Material(
+                          child: Image.file(
+                            avatarImageFile,
+                            width: 90.0,
+                            height: 90.0,
+                            fit: BoxFit.cover,
+                          ),
+                          borderRadius: BorderRadius.all(Radius.circular(45.0)),
+                          clipBehavior: Clip.hardEdge,
+                        ),
+                  IconButton(
+                    icon: Icon(
+                      Icons.camera_alt,
+                      color: Colors.grey,
+                    ),
+                    onPressed: getImage,
+                    padding: EdgeInsets.all(30.0),
+                    splashColor: Colors.transparent,
+                    highlightColor: Colors.grey,
+                    iconSize: 30.0,
+                  ),
+                  SizedBox(height: 45.0),
+                  nickNameField,
+                  SizedBox(height: 25.0),
+                  aboutMeField,
+                  SizedBox(height: 25.0),
+                  emailField,
+                  SizedBox(height: 25.0),
+                  passwordField,
+                  SizedBox(
+                    height: 35.0,
+                  ),
+                  SizedBox(
+                    height: 15.0,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      );
+    }
   }
 
   void signUp() async {
@@ -359,6 +461,9 @@ class _SignUpPageState extends State<SignUpPage> {
             errorToShow = 'Problema com conexão';
             break;
           // ...
+          case 'The email address is already in use by another account.':
+            errorToShow = 'E-mail já cadastrado';
+            break;
           default:
             errorToShow = 'Ocorreu um problema ao autenticar';
         }
