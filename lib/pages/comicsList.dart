@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:schools_out/components/menu.dart';
 import 'package:schools_out/entities/comics.dart';
 import 'package:schools_out/entities/comicsPage.dart';
+import 'package:schools_out/entities/user.dart';
 import 'package:schools_out/pages/comicsBuyingPage.dart';
 import 'package:schools_out/services/comicsService.dart';
+import 'package:schools_out/services/userService.dart';
 
 import 'comicsReadingPage.dart';
 
@@ -15,6 +17,7 @@ class ComicsListState extends State<ComicsList> {
   List<Comics> comicsList = new List<Comics>();
 
   Future<List<Comics>> futureComicsList;
+  Future<User> loggedUser;
 
   final PageController ctrl = PageController(viewportFraction: 0.7);
 
@@ -24,6 +27,7 @@ class ComicsListState extends State<ComicsList> {
   @override
   void initState() {
     futureComicsList = getComics();
+    loggedUser = getLoggedUser();
 
     // Set state when page changes
     ctrl.addListener(() {
@@ -41,15 +45,27 @@ class ComicsListState extends State<ComicsList> {
   Widget build(BuildContext context) {
     List<Comics> comicsList = new List<Comics>();
 
-    handleOnTap(hq) {
-      Navigator.push<Widget>(
-        context,
-        MaterialPageRoute(
-          builder: (context) => ComicsBuyingPage(
-            hq,
+    handleOnTap(book, user) {
+      if(!user.owned.contains(book.id) && book.price > 0){
+        Navigator.push<Widget>(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ComicsBuyingPage(
+              book,
+            ),
           ),
-        ),
-      );
+        );
+      } else {
+        Navigator.push<Widget>(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ComicsReadingPage(
+              book,
+            ),
+          ),
+        );
+      }
+
     }
 
     // Query Firestore
@@ -59,14 +75,14 @@ class ComicsListState extends State<ComicsList> {
 
     // Builder Functions
 
-    _buildStoryPage(Comics data, bool active) {
+    _buildStoryPage(Comics data, bool active, User user) {
       // Animated Properties
       final double blur = active ? 20 : 0;
       final double offset = active ? 20 : 0;
       final double top = active ? 80 : 200;
 
       return GestureDetector(
-        onTap: () => handleOnTap(data),
+        onTap: () => handleOnTap(data, user),
         child: AnimatedContainer(
           height: 20,
           duration: Duration(milliseconds: 500),
@@ -83,25 +99,13 @@ class ComicsListState extends State<ComicsList> {
       );
     }
 
-    _buildAllPages() {
-      return PageView.builder(
-          controller: ctrl,
-          itemCount: comicsList.length,
-          itemBuilder: (context, int currentIdx) {
-            if (comicsList.length > currentIdx) {
-              // Active page
-              bool active = currentIdx == currentPage;
-              return _buildStoryPage(comicsList[currentIdx], active);
-            }
-          });
-    }
 
     _buildButton(tag) {
       // TODO
     }
 
     return FutureBuilder(
-      future: futureComicsList,
+      future: Future.wait([futureComicsList, loggedUser]),
       initialData: [],
       builder: (_, snapshot) {
         if (snapshot.data == null) {
@@ -122,18 +126,18 @@ class ComicsListState extends State<ComicsList> {
               body: Center(
                 child: CircularProgressIndicator(),
               ));
-        } else if (snapshot.data.length > 0) {
+        } else if (snapshot.data.length > 1) {
           comicsList.clear();
 
-          snapshot.data.forEach((element) {
+          snapshot.data[0].forEach((element) {
             List<ComicsPage> pagesForThisHq = new List<ComicsPage>();
 
             element.pages.forEach((page) {
               pagesForThisHq.add(ComicsPage(page.image.toString(), page.page));
             });
 
-            comicsList
-                .add(Comics(element.name, element.edition, pagesForThisHq, element.description, element.price, element.id));
+            comicsList.add(Comics(element.name, element.edition, pagesForThisHq,
+                element.description, element.price, element.id));
           });
 
           return Scaffold(
@@ -158,7 +162,7 @@ class ComicsListState extends State<ComicsList> {
                     if (comicsList.length > currentIdx) {
                       // Active page
                       bool active = currentIdx == currentPage;
-                      return _buildStoryPage(comicsList[currentIdx], active);
+                      return _buildStoryPage(comicsList[currentIdx], active, snapshot.data[1]);
                     }
                   }));
         } else {

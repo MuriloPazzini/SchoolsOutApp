@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:schools_out/components/hqSlider.dart';
 import 'package:schools_out/components/comicsSlider.dart';
 import 'package:schools_out/pages/loggedInHome.dart';
 import 'package:schools_out/pages/loggedOutHome.dart';
