@@ -1,4 +1,3 @@
-import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
 import 'package:schools_out/pages/home.dart';
 import 'package:splashscreen/splashscreen.dart';
@@ -32,19 +31,19 @@ class SplashScreenComponent extends StatefulWidget {
 }
 
 class _SplashScreenComponentState extends State<SplashScreenComponent> {
-  final assetsAudioPlayer = AssetsAudioPlayer();
+  //final assetsAudioPlayer = AssetsAudioPlayer();
 
   @override
   void initState() {
     super.initState();
-    assetsAudioPlayer.open("assets/success.mp3");
-    assetsAudioPlayer.play();
+    //assetsAudioPlayer.open("assets/success.mp3");
+    //assetsAudioPlayer.play();
   }
 
   @override
   void dispose() {
     super.dispose();
-    assetsAudioPlayer.stop();
+    //assetsAudioPlayer.stop();
   }
 
   @override
