@@ -45,12 +45,9 @@ class _ChatPageState extends State<ChatPage> {
     textController = TextEditingController();
     scrollController = ScrollController();
     //Creating the socket
-    socket = IO.io('https://schools-out-backend.herokuapp.com', <String, dynamic>{
+    socket =
+        IO.io('https://schools-out-backend.herokuapp.com', <String, dynamic>{
       'transports': ['websocket']
-    });
-
-    socket.on('connect', (_) {
-      print('connect');
     });
 
     socket.on('error', (data) => print(data));
@@ -67,8 +64,6 @@ class _ChatPageState extends State<ChatPage> {
     });
 
     socket.connect();
-
-    var a = socket.connected;
     //Connect to the socket
     super.initState();
   }
@@ -243,13 +238,15 @@ class _ChatPageState extends State<ChatPage> {
                 ),
                 backgroundColor: Colors.blueGrey[600],
               ),
-              body: SingleChildScrollView(
-                child: Column(
-                  children: <Widget>[
-                    SizedBox(height: height * 0.05),
-                    buildMessageList(),
-                    buildInputArea(),
-                  ],
+              body: SafeArea(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: <Widget>[
+                      SizedBox(height: height * 0.05),
+                      buildMessageList(),
+                      buildInputArea(),
+                    ],
+                  ),
                 ),
               ),
             );
@@ -268,26 +265,30 @@ class _ChatPageState extends State<ChatPage> {
                 backgroundColor: Colors.blueGrey[600],
               ),
               bottomNavigationBar: buildInputArea(),
-              body: SingleChildScrollView(
-                child: Column(
-                  children: <Widget>[
-                    SizedBox(height: height * 0.05),
-                    Container(
-                      alignment: Alignment.centerLeft,
-                      child: Container(
-                        padding: const EdgeInsets.all(20.0),
-                        margin: const EdgeInsets.only(bottom: 20.0, left: 20.0),
-                        decoration: BoxDecoration(
-                          color: Colors.deepPurple,
-                          borderRadius: BorderRadius.circular(20.0),
-                        ),
-                        child: Text(
-                          'Carregando Mensagens antigas...',
-                          style: TextStyle(color: Colors.white, fontSize: 15.0),
+              body: SafeArea(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: <Widget>[
+                      SizedBox(height: height * 0.05),
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        child: Container(
+                          padding: const EdgeInsets.all(20.0),
+                          margin:
+                              const EdgeInsets.only(bottom: 20.0, left: 20.0),
+                          decoration: BoxDecoration(
+                            color: Colors.deepPurple,
+                            borderRadius: BorderRadius.circular(20.0),
+                          ),
+                          child: Text(
+                            'Carregando Mensagens antigas...',
+                            style:
+                                TextStyle(color: Colors.white, fontSize: 15.0),
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             );

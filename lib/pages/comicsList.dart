@@ -168,9 +168,9 @@ class ComicsListState extends State<ComicsList> {
                 backgroundColor: Colors.blueGrey[600],
               ),
               drawer: menu(),
-              body: Center(
+              body: SafeArea( child: Center(
                 child: CircularProgressIndicator(),
-              ));
+              )));
         }
       },
     );

@@ -190,39 +190,41 @@ class _quizpageState extends State<quizpage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Container(
-          width: MediaQuery.of(context).size.width * 0.85,
-          height: MediaQuery.of(context).size.height * 0.55,
-          child: Card(
-            borderOnForeground: true,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.only(
-                      bottom: MediaQuery.of(context).size.width * 0.15),
-                  child: Container(
-                    width: MediaQuery.of(context).size.width,
-                    padding: EdgeInsets.all(15.0),
-                    alignment: Alignment.bottomLeft,
-                    child: Center(
-                      child: Text(
-                        mydata.questions[i].description,
-                        textAlign: TextAlign.center,
-                        style:
-                            TextStyle(fontSize: 18.0, fontFamily: 'Toontime'),
+      body: SafeArea(
+        child: Center(
+          child: Container(
+            width: MediaQuery.of(context).size.width * 0.85,
+            height: MediaQuery.of(context).size.height * 0.55,
+            child: Card(
+              borderOnForeground: true,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.only(
+                        bottom: MediaQuery.of(context).size.width * 0.15),
+                    child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      padding: EdgeInsets.all(15.0),
+                      alignment: Alignment.bottomLeft,
+                      child: Center(
+                        child: Text(
+                          mydata.questions[i].description,
+                          textAlign: TextAlign.center,
+                          style:
+                              TextStyle(fontSize: 18.0, fontFamily: 'Toontime'),
+                        ),
                       ),
                     ),
                   ),
-                ),
-                Container(
-                  child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children:
-                          generateChoiceButtons(mydata.questions[i].answers)),
-                ),
-              ],
+                  Container(
+                    child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children:
+                            generateChoiceButtons(mydata.questions[i].answers)),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

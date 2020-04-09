@@ -12,7 +12,6 @@ class QuizList extends StatefulWidget {
 }
 
 class _QuizList extends State<QuizList> {
-
   Future<List<Quiz>> futureQuizList;
 
   @override
@@ -50,7 +49,8 @@ class _QuizList extends State<QuizList> {
               backgroundColor: Colors.blueGrey[600],
             ),
             drawer: menu(),
-            body: Container(
+            body: SafeArea(
+              child: Container(
                 padding: EdgeInsets.only(top: 15.0),
                 child: GridView.count(
                   crossAxisCount: 3,
@@ -88,12 +88,16 @@ class _QuizList extends State<QuizList> {
                       );
                     });
                   }).toList(),
-                )),
+                ),
+              ),
+            ),
           );
         } else {
           return Scaffold(
-            body: Center(
-              child: CircularProgressIndicator(),
+            body: SafeArea(
+              child: Center(
+                child: CircularProgressIndicator(),
+              ),
             ),
           );
         }

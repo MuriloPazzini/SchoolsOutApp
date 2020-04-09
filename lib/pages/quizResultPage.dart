@@ -55,96 +55,98 @@ class _resultpageState extends State<resultpage> {
         backgroundColor: Colors.blueGrey[600],
       ),
       drawer: menu(),
-      body: Column(
-        children: <Widget>[
-          Expanded(
-            flex: 8,
-            child: Material(
-              child: Container(
-                child: Column(
-                  children: <Widget>[
-                    Material(
-                      child: Container(
-                        width: 300.0,
-                        height: 300.0,
-                        child: ClipRect(
-                          child: Image(
-                            image: AssetImage(
-                              image,
+      body: SafeArea(
+        child: Column(
+          children: <Widget>[
+            Expanded(
+              flex: 8,
+              child: Material(
+                child: Container(
+                  child: Column(
+                    children: <Widget>[
+                      Material(
+                        child: Container(
+                          width: 300.0,
+                          height: 300.0,
+                          child: ClipRect(
+                            child: Image(
+                              image: AssetImage(
+                                image,
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                    Padding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 15.0,
-                        ),
-                        child: Center(
-                          child: (marks == 0)
-                              ? Text(
-                                  'Que pena!',
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    fontSize: 38.0,
-                                    fontFamily: "Toontime",
-                                  ),
-                                )
-                              : Text(
-                                  'Parabéns!',
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    fontSize: 38.0,
-                                    fontFamily: "Toontime",
-                                  ),
-                                ),
-                        )),
-                    Padding(
-                        padding: EdgeInsets.symmetric(
-                          vertical: 05.0,
-                          horizontal: 15.0,
-                        ),
-                        child: Center(
-                          child: Text(
-                            message,
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: 22.0,
-                              fontFamily: "Toontime",
-                            ),
+                      Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 15.0,
                           ),
-                        )),
-                  ],
+                          child: Center(
+                            child: (marks == 0)
+                                ? Text(
+                                    'Que pena!',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontSize: 38.0,
+                                      fontFamily: "Toontime",
+                                    ),
+                                  )
+                                : Text(
+                                    'Parabéns!',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontSize: 38.0,
+                                      fontFamily: "Toontime",
+                                    ),
+                                  ),
+                          )),
+                      Padding(
+                          padding: EdgeInsets.symmetric(
+                            vertical: 05.0,
+                            horizontal: 15.0,
+                          ),
+                          child: Center(
+                            child: Text(
+                              message,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 22.0,
+                                fontFamily: "Toontime",
+                              ),
+                            ),
+                          )),
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-          Expanded(
-            flex: 4,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                OutlineButton(
-                  onPressed: () {
-                    Navigator.of(context).pushReplacement(MaterialPageRoute(
-                      builder: (context) => QuizList(),
-                    ));
-                  },
-                  child: Text(
-                    "Continue",
-                    style: TextStyle(fontSize: 18.0, fontFamily: 'Toontime'),
-                  ),
-                  padding: EdgeInsets.symmetric(
-                    vertical: 10.0,
-                    horizontal: 25.0,
-                  ),
-                  borderSide: BorderSide(width: 3.0, color: Colors.indigo),
-                  splashColor: Colors.indigoAccent,
-                )
-              ],
-            ),
-          )
-        ],
+            Expanded(
+              flex: 4,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  OutlineButton(
+                    onPressed: () {
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        builder: (context) => QuizList(),
+                      ));
+                    },
+                    child: Text(
+                      "Continue",
+                      style: TextStyle(fontSize: 18.0, fontFamily: 'Toontime'),
+                    ),
+                    padding: EdgeInsets.symmetric(
+                      vertical: 10.0,
+                      horizontal: 25.0,
+                    ),
+                    borderSide: BorderSide(width: 3.0, color: Colors.indigo),
+                    splashColor: Colors.indigoAccent,
+                  )
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

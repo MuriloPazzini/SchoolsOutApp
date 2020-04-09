@@ -195,83 +195,86 @@ class _SignUpPageState extends State<SignUpPage> {
                 color: Colors.white, fontSize: 28, fontFamily: 'Toontime'),
           ),
         ),
-        body: SingleChildScrollView(
-          child: Container(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height,
-            color: Colors.white,
-            child: Padding(
-              padding: const EdgeInsets.all(36.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  (avatarImageFile == null)
-                      ? (photoUrl != ''
-                          ? Material(
-                              child: CachedNetworkImage(
-                                placeholder: (context, url) => Container(
-                                  child: CircularProgressIndicator(
-                                    strokeWidth: 2.0,
-                                    valueColor: AlwaysStoppedAnimation<Color>(
-                                        Colors.blueGrey[600]),
+        body: SafeArea(
+          child: SingleChildScrollView(
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
+              color: Colors.white,
+              child: Padding(
+                padding: const EdgeInsets.all(36.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    (avatarImageFile == null)
+                        ? (photoUrl != ''
+                            ? Material(
+                                child: CachedNetworkImage(
+                                  placeholder: (context, url) => Container(
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2.0,
+                                      valueColor: AlwaysStoppedAnimation<Color>(
+                                          Colors.blueGrey[600]),
+                                    ),
+                                    width: 90.0,
+                                    height: 90.0,
+                                    padding: EdgeInsets.all(20.0),
                                   ),
+                                  imageUrl: photoUrl,
                                   width: 90.0,
                                   height: 90.0,
-                                  padding: EdgeInsets.all(20.0),
+                                  fit: BoxFit.cover,
                                 ),
-                                imageUrl: photoUrl,
-                                width: 90.0,
-                                height: 90.0,
-                                fit: BoxFit.cover,
-                              ),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(45.0)),
-                              clipBehavior: Clip.hardEdge,
-                            )
-                          : Icon(
-                              Icons.account_circle,
-                              size: 90.0,
-                              color: Colors.grey,
-                            ))
-                      : Material(
-                          child: Image.file(
-                            avatarImageFile,
-                            width: 90.0,
-                            height: 90.0,
-                            fit: BoxFit.cover,
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(45.0)),
+                                clipBehavior: Clip.hardEdge,
+                              )
+                            : Icon(
+                                Icons.account_circle,
+                                size: 90.0,
+                                color: Colors.grey,
+                              ))
+                        : Material(
+                            child: Image.file(
+                              avatarImageFile,
+                              width: 90.0,
+                              height: 90.0,
+                              fit: BoxFit.cover,
+                            ),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(45.0)),
+                            clipBehavior: Clip.hardEdge,
                           ),
-                          borderRadius: BorderRadius.all(Radius.circular(45.0)),
-                          clipBehavior: Clip.hardEdge,
-                        ),
-                  IconButton(
-                    icon: Icon(
-                      Icons.camera_alt,
-                      color: Colors.grey,
+                    IconButton(
+                      icon: Icon(
+                        Icons.camera_alt,
+                        color: Colors.grey,
+                      ),
+                      onPressed: getImage,
+                      padding: EdgeInsets.all(30.0),
+                      splashColor: Colors.transparent,
+                      highlightColor: Colors.grey,
+                      iconSize: 30.0,
                     ),
-                    onPressed: getImage,
-                    padding: EdgeInsets.all(30.0),
-                    splashColor: Colors.transparent,
-                    highlightColor: Colors.grey,
-                    iconSize: 30.0,
-                  ),
-                  SizedBox(height: 45.0),
-                  nickNameField,
-                  SizedBox(height: 25.0),
-                  aboutMeField,
-                  SizedBox(height: 25.0),
-                  emailField,
-                  SizedBox(height: 25.0),
-                  passwordField,
-                  SizedBox(
-                    height: 35.0,
-                  ),
-                  Center(
-                    child: CircularProgressIndicator(),
-                  ),
-                  SizedBox(
-                    height: 15.0,
-                  ),
-                ],
+                    SizedBox(height: 45.0),
+                    nickNameField,
+                    SizedBox(height: 25.0),
+                    aboutMeField,
+                    SizedBox(height: 25.0),
+                    emailField,
+                    SizedBox(height: 25.0),
+                    passwordField,
+                    SizedBox(
+                      height: 35.0,
+                    ),
+                    Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                    SizedBox(
+                      height: 15.0,
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -294,80 +297,83 @@ class _SignUpPageState extends State<SignUpPage> {
           child: Icon(Icons.check),
           onPressed: signUp,
         ),
-        body: SingleChildScrollView(
-          child: Container(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height,
-            color: Colors.white,
-            child: Padding(
-              padding: const EdgeInsets.all(36.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  (avatarImageFile == null)
-                      ? (photoUrl != ''
-                          ? Material(
-                              child: CachedNetworkImage(
-                                placeholder: (context, url) => Container(
-                                  child: CircularProgressIndicator(
-                                    strokeWidth: 2.0,
-                                    valueColor: AlwaysStoppedAnimation<Color>(
-                                        Colors.blueGrey[600]),
+        body: SafeArea(
+          child: SingleChildScrollView(
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
+              color: Colors.white,
+              child: Padding(
+                padding: const EdgeInsets.all(36.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    (avatarImageFile == null)
+                        ? (photoUrl != ''
+                            ? Material(
+                                child: CachedNetworkImage(
+                                  placeholder: (context, url) => Container(
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2.0,
+                                      valueColor: AlwaysStoppedAnimation<Color>(
+                                          Colors.blueGrey[600]),
+                                    ),
+                                    width: 90.0,
+                                    height: 90.0,
+                                    padding: EdgeInsets.all(20.0),
                                   ),
+                                  imageUrl: photoUrl,
                                   width: 90.0,
                                   height: 90.0,
-                                  padding: EdgeInsets.all(20.0),
+                                  fit: BoxFit.cover,
                                 ),
-                                imageUrl: photoUrl,
-                                width: 90.0,
-                                height: 90.0,
-                                fit: BoxFit.cover,
-                              ),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(45.0)),
-                              clipBehavior: Clip.hardEdge,
-                            )
-                          : Icon(
-                              Icons.account_circle,
-                              size: 90.0,
-                              color: Colors.grey,
-                            ))
-                      : Material(
-                          child: Image.file(
-                            avatarImageFile,
-                            width: 90.0,
-                            height: 90.0,
-                            fit: BoxFit.cover,
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(45.0)),
+                                clipBehavior: Clip.hardEdge,
+                              )
+                            : Icon(
+                                Icons.account_circle,
+                                size: 90.0,
+                                color: Colors.grey,
+                              ))
+                        : Material(
+                            child: Image.file(
+                              avatarImageFile,
+                              width: 90.0,
+                              height: 90.0,
+                              fit: BoxFit.cover,
+                            ),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(45.0)),
+                            clipBehavior: Clip.hardEdge,
                           ),
-                          borderRadius: BorderRadius.all(Radius.circular(45.0)),
-                          clipBehavior: Clip.hardEdge,
-                        ),
-                  IconButton(
-                    icon: Icon(
-                      Icons.camera_alt,
-                      color: Colors.grey,
+                    IconButton(
+                      icon: Icon(
+                        Icons.camera_alt,
+                        color: Colors.grey,
+                      ),
+                      onPressed: getImage,
+                      padding: EdgeInsets.all(30.0),
+                      splashColor: Colors.transparent,
+                      highlightColor: Colors.grey,
+                      iconSize: 30.0,
                     ),
-                    onPressed: getImage,
-                    padding: EdgeInsets.all(30.0),
-                    splashColor: Colors.transparent,
-                    highlightColor: Colors.grey,
-                    iconSize: 30.0,
-                  ),
-                  SizedBox(height: 45.0),
-                  nickNameField,
-                  SizedBox(height: 25.0),
-                  aboutMeField,
-                  SizedBox(height: 25.0),
-                  emailField,
-                  SizedBox(height: 25.0),
-                  passwordField,
-                  SizedBox(
-                    height: 35.0,
-                  ),
-                  SizedBox(
-                    height: 15.0,
-                  ),
-                ],
+                    SizedBox(height: 45.0),
+                    nickNameField,
+                    SizedBox(height: 25.0),
+                    aboutMeField,
+                    SizedBox(height: 25.0),
+                    emailField,
+                    SizedBox(height: 25.0),
+                    passwordField,
+                    SizedBox(
+                      height: 35.0,
+                    ),
+                    SizedBox(
+                      height: 15.0,
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

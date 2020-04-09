@@ -79,36 +79,40 @@ class _ComicsReadingPage extends State<ComicsReadingPage> {
         ),
         backgroundColor: Colors.blueGrey[600],
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            Padding(
-                padding: EdgeInsets.fromLTRB(
-                    0.0, MediaQuery.of(context).size.height * 0.17, 0.0, 0.0),
-                child: comicsCarousel),
-            Padding(
-              padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-              child: Container(
-                width: MediaQuery.of(context).size.width * 0.5,
-                height: MediaQuery.of(context).size.height * 0.2,
-                child: TextField(
-                  keyboardType: TextInputType.numberWithOptions(),
-                  controller: _c,
-                  obscureText: false,
-                  textAlign: TextAlign.center,
-                  decoration: InputDecoration(
-                      hintText: "Página que deseja ir",
-                      hintStyle: TextStyle(fontFamily: 'Toontime'),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(32.0),
-                          borderSide: new BorderSide(width: 1, color: Colors.teal)),
-                      focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(32.0),
-                          borderSide: new BorderSide(width: 1, color: Colors.teal))),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              Padding(
+                  padding: EdgeInsets.fromLTRB(
+                      0.0, MediaQuery.of(context).size.height * 0.17, 0.0, 0.0),
+                  child: comicsCarousel),
+              Padding(
+                padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                child: Container(
+                  width: MediaQuery.of(context).size.width * 0.5,
+                  height: MediaQuery.of(context).size.height * 0.2,
+                  child: TextField(
+                    keyboardType: TextInputType.numberWithOptions(),
+                    controller: _c,
+                    obscureText: false,
+                    textAlign: TextAlign.center,
+                    decoration: InputDecoration(
+                        hintText: "Página que deseja ir",
+                        hintStyle: TextStyle(fontFamily: 'Toontime'),
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(32.0),
+                            borderSide:
+                                new BorderSide(width: 1, color: Colors.teal)),
+                        focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(32.0),
+                            borderSide:
+                                new BorderSide(width: 1, color: Colors.teal))),
+                  ),
                 ),
-              ),
-            )
-          ],
+              )
+            ],
+          ),
         ),
       ),
       floatingActionButton: new FloatingActionButton(

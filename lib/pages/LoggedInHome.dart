@@ -46,19 +46,20 @@ class _LoggedInHomepage extends State<LoggedInHomepage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.white,
-        appBar: AppBar(
-          iconTheme: new IconThemeData(color: Colors.white),
-          centerTitle: true,
-          title: Text(
-            "School's Out",
-            style: TextStyle(
-                color: Colors.white, fontSize: 28, fontFamily: 'Toontime'),
-          ),
-          backgroundColor: Colors.blueGrey[600],
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        iconTheme: new IconThemeData(color: Colors.white),
+        centerTitle: true,
+        title: Text(
+          "School's Out",
+          style: TextStyle(
+              color: Colors.white, fontSize: 28, fontFamily: 'Toontime'),
         ),
-        drawer: menu(),
-        body: SingleChildScrollView(
+        backgroundColor: Colors.blueGrey[600],
+      ),
+      drawer: menu(),
+      body: SafeArea(
+        child: SingleChildScrollView(
           physics: BouncingScrollPhysics(),
           child: Column(
             children: <Widget>[
@@ -114,7 +115,9 @@ class _LoggedInHomepage extends State<LoggedInHomepage>
               comicsSlider(),
             ],
           ),
-        ));
+        ),
+      ),
+    );
   }
 }
 

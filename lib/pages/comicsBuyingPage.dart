@@ -28,7 +28,7 @@ class _ComicsBuyingPage extends State<ComicsBuyingPage> {
 
     final List child = map<Widget>(
       widget.comics.pages,
-          (index, i) {
+      (index, i) {
         return Container(
           margin: EdgeInsets.all(5.0),
           child: ClipRRect(
@@ -77,31 +77,38 @@ class _ComicsBuyingPage extends State<ComicsBuyingPage> {
         ),
         backgroundColor: Colors.blueGrey[600],
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            Padding(
-                padding: EdgeInsets.fromLTRB(
-                    0, MediaQuery.of(context).size.height * 0.05, 0, 0),
-                child: comicsCarousel),
-            Container(
-              alignment: Alignment.bottomLeft,
-              padding: EdgeInsets.only(left: 25, right: 25, bottom: 40),
-              child: Text(widget.comics.description, style: TextStyle(color: Colors.black, fontSize: 15, fontFamily: 'Toontime'))
-            ),
-            Container(
-                alignment: Alignment.bottomLeft,
-                padding: EdgeInsets.only(left: 25, right: 25, bottom: 70),
-                child: Text('Preço: ' + widget.comics.price.toString(), style: TextStyle(color: Colors.black, fontSize: 18, fontFamily: 'Toontime'))
-            )
-
-          ],
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              Padding(
+                  padding: EdgeInsets.fromLTRB(
+                      0, MediaQuery.of(context).size.height * 0.05, 0, 0),
+                  child: comicsCarousel),
+              Container(
+                  alignment: Alignment.bottomLeft,
+                  padding: EdgeInsets.only(left: 25, right: 25, bottom: 40),
+                  child: Text(widget.comics.description,
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 15,
+                          fontFamily: 'Toontime'))),
+              Container(
+                  alignment: Alignment.bottomLeft,
+                  padding: EdgeInsets.only(left: 25, right: 25, bottom: 70),
+                  child: Text('Preço: ' + widget.comics.price.toString(),
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 18,
+                          fontFamily: 'Toontime')))
+            ],
+          ),
         ),
       ),
       floatingActionButton: new FloatingActionButton(
         backgroundColor: Colors.purple[600],
         child: Icon(Icons.attach_money),
-        onPressed: () =>{
+        onPressed: () => {
           //TODO PAYMENT
         },
       ),
