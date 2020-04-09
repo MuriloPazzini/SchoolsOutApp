@@ -16,7 +16,7 @@ Future<List<String>> getMessageHistory() async {
   var documents = json.decode(response.body);
 
   documents['data'].forEach((element) {
-      messageList.add(element['message']);
+      messageList.add(json.decode(element)['message']);
   });
 
 

@@ -1,9 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
-
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:flutter/material.dart';
-import 'package:flutter_socket_io/flutter_socket_io.dart';
-import 'package:flutter_socket_io/socket_io_manager.dart';
 import 'package:schools_out/entities/message.dart';
 import 'package:schools_out/entities/user.dart';
 import 'package:schools_out/services/messageService.dart';
@@ -22,7 +20,7 @@ class ChatPage extends StatefulWidget {
 class _ChatPageState extends State<ChatPage> {
   bool isInitialized = true;
   Future<List<String>> futureMessageHistory;
-  SocketIO socketIO;
+  IO.Socket socket;
   List<Message> messages = new List<Message>();
   double height, width;
   TextEditingController textController;
@@ -30,10 +28,9 @@ class _ChatPageState extends State<ChatPage> {
 
   @override
   void dispose() {
-    socketIO.sendMessage(
-        'send_message', json.encode({'message': widget.user.nickname + ' se desconectou'}));
-    socketIO.unSubscribesAll();
-    socketIO.disconnect();
+    socket.emit('send_message',
+        json.encode({'message': widget.user.nickname + ' se desconectou'}));
+    socket.disconnect();
     super.dispose();
   }
 
@@ -48,15 +45,18 @@ class _ChatPageState extends State<ChatPage> {
     textController = TextEditingController();
     scrollController = ScrollController();
     //Creating the socket
-    socketIO = SocketIOManager().createSocketIO(
-      'https://schools-out-backend.herokuapp.com',
-      '/chat',
-    );
-    //Call init before doing anything with socket
-    socketIO.init();
+    socket = IO.io('https://schools-out-backend.herokuapp.com', <String, dynamic>{
+      'transports': ['websocket']
+    });
+
+    socket.on('connect', (_) {
+      print('connect');
+    });
+
+    socket.on('error', (data) => print(data));
 
     //Subscribe to an event to listen to
-    socketIO.subscribe('receive_message', (jsonData) {
+    socket.on('receive_message', (jsonData) {
       //Convert the JSON data received into a Map
       Map<String, dynamic> data = json.decode(jsonData);
       this.setState(() => messages.add(new Message(data['message'], false)));
@@ -65,8 +65,11 @@ class _ChatPageState extends State<ChatPage> {
           () => scrollController
               .jumpTo(scrollController.position.maxScrollExtent));
     });
+
+    socket.connect();
+
+    var a = socket.connected;
     //Connect to the socket
-    socketIO.connect();
     super.initState();
   }
 
@@ -144,7 +147,7 @@ class _ChatPageState extends State<ChatPage> {
               widget.user.nickname + ': ' + textController.text;
 
           //Send the message as JSON data to send_message event
-          socketIO.sendMessage(
+          socket.emit(
               'send_message', json.encode({'message': messageWithUser}));
           //Add the message to the list
           this.setState(
