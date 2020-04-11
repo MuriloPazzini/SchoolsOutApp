@@ -128,13 +128,12 @@ class ImageData extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Container(
       height: 180,
       decoration: BoxDecoration(
           image: DecorationImage(
             image: NetworkImage(image),
-            fit: BoxFit.cover,
+            fit: BoxFit.scaleDown,
           ),
           borderRadius: BorderRadius.circular(8.0)),
       child: Align(

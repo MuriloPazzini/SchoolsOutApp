@@ -11,7 +11,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:schools_out/pages/loggedInHome.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 TextEditingController emailController = new TextEditingController();

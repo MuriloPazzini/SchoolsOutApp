@@ -42,8 +42,6 @@ class _HomePage extends State<HomePage> {
               return LoggedOutHomepage();
             }
           }
-
-          /// other way there is no user logged.
           return Scaffold(body: Center(child: CircularProgressIndicator()));
         });
   }
