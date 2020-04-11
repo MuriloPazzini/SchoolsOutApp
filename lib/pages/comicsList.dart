@@ -46,7 +46,7 @@ class ComicsListState extends State<ComicsList> {
     List<Comics> comicsList = new List<Comics>();
 
     handleOnTap(book, user) {
-      if(!user.owned.contains(book.id) && book.price > 0){
+      if (!user.owned.contains(book.id) && book.price > 0) {
         Navigator.push<Widget>(
           context,
           MaterialPageRoute(
@@ -65,31 +65,54 @@ class ComicsListState extends State<ComicsList> {
           ),
         );
       }
-
     }
 
-    _buildStoryPage(Comics data, bool active, User user) {
+    buildPreviewPage(Comics data, bool active, User user) {
       // Animated Properties
       final double blur = active ? 20 : 0;
       final double offset = active ? 20 : 0;
       final double top = active ? 80 : 200;
 
-      return GestureDetector(
-        onTap: () => handleOnTap(data, user),
-        child: AnimatedContainer(
-          height: 20,
-          duration: Duration(milliseconds: 500),
-          curve: Curves.easeOutQuint,
-          margin: EdgeInsets.only(top: top, bottom: 50, right: 0),
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              image: DecorationImage(
-                fit: BoxFit.scaleDown,
-                image: NetworkImage(data.pages[0].image),
+      if (data.price != 0 && !user.owned.contains(data.id)) {
+        return GestureDetector(
+          onTap: () => handleOnTap(data, user),
+          child: AnimatedContainer(
+            height: 20,
+            duration: Duration(milliseconds: 500),
+            curve: Curves.easeOutQuint,
+            margin: EdgeInsets.only(top: top, bottom: 50, right: 0),
+            child: ShaderMask(
+              blendMode: BlendMode.lighten,
+              shaderCallback: (Rect bounds) {
+                return LinearGradient(
+                  colors: [Colors.grey, Colors.grey],
+                ).createShader(bounds);
+              },
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(20.0),
+                child: Image.network(data.pages[0].image),
               ),
-              boxShadow: []),
-        ),
-      );
+            ),
+          ),
+        );
+      } else {
+        return GestureDetector(
+          onTap: () => handleOnTap(data, user),
+          child: AnimatedContainer(
+            height: 20,
+            duration: Duration(milliseconds: 500),
+            curve: Curves.easeOutQuint,
+            margin: EdgeInsets.only(top: top, bottom: 50, right: 0),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                image: DecorationImage(
+                  fit: BoxFit.scaleDown,
+                  image: NetworkImage(data.pages[0].image),
+                ),
+                boxShadow: []),
+          ),
+        );
+      }
     }
 
     return FutureBuilder(
@@ -150,7 +173,8 @@ class ComicsListState extends State<ComicsList> {
                     if (comicsList.length > currentIdx) {
                       // Active page
                       bool active = currentIdx == currentPage;
-                      return _buildStoryPage(comicsList[currentIdx], active, snapshot.data[1]);
+                      return buildPreviewPage(
+                          comicsList[currentIdx], active, snapshot.data[1]);
                     }
                   }));
         } else {
@@ -168,7 +192,8 @@ class ComicsListState extends State<ComicsList> {
                 backgroundColor: Colors.blueGrey[600],
               ),
               drawer: menu(),
-              body: SafeArea( child: Center(
+              body: SafeArea(
+                  child: Center(
                 child: CircularProgressIndicator(),
               )));
         }
