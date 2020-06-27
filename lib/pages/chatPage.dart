@@ -209,7 +209,7 @@ class _ChatPageState extends State<ChatPage> {
               title: Text(
                 "School's Out Chat",
                 style: TextStyle(
-                    color: Colors.white, fontSize: 28, fontFamily: 'Toontime'),
+                    color: Colors.white, fontSize: 28, fontFamily: 'Lemon'),
               ),
               backgroundColor: Colors.blueGrey[600],
             ),
@@ -234,7 +234,7 @@ class _ChatPageState extends State<ChatPage> {
                   style: TextStyle(
                       color: Colors.white,
                       fontSize: 28,
-                      fontFamily: 'Toontime'),
+                      fontFamily: 'Lemon'),
                 ),
                 backgroundColor: Colors.blueGrey[600],
               ),
@@ -260,7 +260,7 @@ class _ChatPageState extends State<ChatPage> {
                   style: TextStyle(
                       color: Colors.white,
                       fontSize: 28,
-                      fontFamily: 'Toontime'),
+                      fontFamily: 'Lemon'),
                 ),
                 backgroundColor: Colors.blueGrey[600],
               ),

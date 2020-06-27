@@ -161,7 +161,7 @@ class _quizpageState extends State<quizpage> {
           mydata.questions[i].answers[k].description,
           style: TextStyle(
             color: Colors.white,
-            fontFamily: "Toontime",
+            fontFamily: "Lemon",
             fontSize: 16.0,
           ),
           maxLines: 1,
@@ -212,7 +212,7 @@ class _quizpageState extends State<quizpage> {
                           mydata.questions[i].description,
                           textAlign: TextAlign.center,
                           style:
-                              TextStyle(fontSize: 18.0, fontFamily: 'Toontime'),
+                              TextStyle(fontSize: 18.0, fontFamily: 'Lemon'),
                         ),
                       ),
                     ),

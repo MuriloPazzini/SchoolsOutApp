@@ -77,13 +77,14 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
-    - family: Toontime
+    - family: Lemon
       fonts:
-        - asset: assets/SF_Toontime.ttf
+        - asset: assets/Lemon_Juice.ttf
+
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro
-  #     fonts:
+  #     fonts:s
   #       - asset: fonts/TrajanPro.ttf
   #       - asset: fonts/TrajanPro_Bold.ttf
   #         weight: 700

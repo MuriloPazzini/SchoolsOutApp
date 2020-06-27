@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:schools_out/entities/user.dart';
@@ -25,7 +24,7 @@ class _LoggedOutHomepage extends State<LoggedOutHomepage> {
     decoration: InputDecoration(
         contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         hintText: "E-mail",
-        hintStyle: TextStyle(fontFamily: 'Toontime'),
+        hintStyle: TextStyle(fontFamily: 'Lemon'),
         border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(32.0),
             borderSide: new BorderSide(width: 1, color: Colors.teal)),
@@ -39,7 +38,7 @@ class _LoggedOutHomepage extends State<LoggedOutHomepage> {
     decoration: InputDecoration(
         contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         hintText: "Senha",
-        hintStyle: TextStyle(fontFamily: 'Toontime'),
+        hintStyle: TextStyle(fontFamily: 'Lemon'),
         border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(32.0),
             borderSide: new BorderSide(width: 1, color: Colors.teal)),
@@ -67,15 +66,15 @@ class _LoggedOutHomepage extends State<LoggedOutHomepage> {
 
     return Scaffold(
       appBar: new AppBar(
-        iconTheme: new IconThemeData(color: Colors.blueGrey[600]),
+        iconTheme: new IconThemeData(color: Colors.grey[100]),
         automaticallyImplyLeading: false,
         centerTitle: true,
         title: Text(
           "School's Out",
           style: TextStyle(
-              color: Colors.white, fontSize: 28, fontFamily: 'Toontime'),
+              color: Colors.black, fontSize: 28, fontFamily: 'Lemon'),
         ),
-        backgroundColor: Colors.blueGrey[600],
+        backgroundColor: Colors.grey[100],
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -122,7 +121,7 @@ class _LoggedOutHomepage extends State<LoggedOutHomepage> {
                                           elevation: 5.0,
                                           borderRadius:
                                               BorderRadius.circular(30.0),
-                                          color: Colors.blueGrey[600],
+                                          color: Colors.grey[100],
                                           child: MaterialButton(
                                             padding: EdgeInsets.fromLTRB(
                                                 20.0, 15.0, 20.0, 15.0),
@@ -228,20 +227,20 @@ class _LoggedOutHomepage extends State<LoggedOutHomepage> {
                                                       content: Text(errorToShow,
                                                           style: TextStyle(
                                                               fontFamily:
-                                                                  'Toontime',
+                                                                  'Lemon',
                                                               color: Colors
-                                                                  .white)),
+                                                                  .black)),
                                                     );
                                                   },
                                                 );
                                               }
                                             },
                                             child: Text(
-                                              "Login",
+                                              "Entrar",
                                               textAlign: TextAlign.center,
                                               style: TextStyle(
-                                                  fontFamily: 'Toontime',
-                                                  color: Colors.white),
+                                                  fontFamily: 'Lemon',
+                                                  color: Colors.black),
                                             ),
                                           ),
                                         ),
@@ -255,7 +254,7 @@ class _LoggedOutHomepage extends State<LoggedOutHomepage> {
                                   child: Material(
                                     elevation: 5.0,
                                     borderRadius: BorderRadius.circular(30.0),
-                                    color: Colors.blueGrey[600],
+                                    color: Colors.grey[100],
                                     child: MaterialButton(
                                       padding: EdgeInsets.fromLTRB(
                                           20.0, 15.0, 20.0, 15.0),
@@ -270,8 +269,8 @@ class _LoggedOutHomepage extends State<LoggedOutHomepage> {
                                       child: Text("Cadastro",
                                           textAlign: TextAlign.center,
                                           style: TextStyle(
-                                              fontFamily: 'Toontime',
-                                              color: Colors.white)),
+                                              fontFamily: 'Lemon',
+                                              color: Colors.black)),
                                     ),
                                   ),
                                 ),

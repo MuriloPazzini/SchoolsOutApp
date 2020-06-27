@@ -48,14 +48,14 @@ class _LoggedInHomepage extends State<LoggedInHomepage>
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        iconTheme: new IconThemeData(color: Colors.white),
+        iconTheme: new IconThemeData(color: Colors.black),
         centerTitle: true,
         title: Text(
           "School's Out",
           style: TextStyle(
-              color: Colors.white, fontSize: 28, fontFamily: 'Toontime'),
+              color: Colors.black, fontSize: 28, fontFamily: 'Lemon'),
         ),
-        backgroundColor: Colors.blueGrey[600],
+        backgroundColor: Colors.grey[100],
       ),
       drawer: menu(),
       body: SafeArea(
@@ -83,8 +83,8 @@ class _LoggedInHomepage extends State<LoggedInHomepage>
                       style: TextStyle(
                           fontWeight: FontWeight.w900,
                           fontSize: 15,
-                          color: Colors.blueGrey,
-                          fontFamily: 'Toontime'),
+                          color: Colors.black,
+                          fontFamily: 'Lemon'),
                     ),
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.65,
@@ -103,8 +103,8 @@ class _LoggedInHomepage extends State<LoggedInHomepage>
                       style: TextStyle(
                           fontWeight: FontWeight.w900,
                           fontSize: 15,
-                          color: Colors.blueGrey,
-                          fontFamily: 'Toontime'),
+                          color: Colors.black,
+                          fontFamily: 'Lemon'),
                     ),
                     SizedBox(
                       width: 180,

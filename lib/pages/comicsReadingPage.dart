@@ -70,14 +70,14 @@ class _ComicsReadingPage extends State<ComicsReadingPage> {
 
     return Scaffold(
       appBar: AppBar(
-        iconTheme: new IconThemeData(color: Colors.white),
+        iconTheme: new IconThemeData(color: Colors.black),
         centerTitle: true,
         title: Text(
           "School's Out",
           style: TextStyle(
-              color: Colors.white, fontSize: 28, fontFamily: 'Toontime'),
+              color: Colors.black, fontSize: 28, fontFamily: 'Lemon'),
         ),
-        backgroundColor: Colors.blueGrey[600],
+        backgroundColor: Colors.grey[100],
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -99,7 +99,7 @@ class _ComicsReadingPage extends State<ComicsReadingPage> {
                     textAlign: TextAlign.center,
                     decoration: InputDecoration(
                         hintText: "Página que deseja ir",
-                        hintStyle: TextStyle(fontFamily: 'Toontime'),
+                        hintStyle: TextStyle(fontFamily: 'Lemon'),
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(32.0),
                             borderSide:
@@ -116,11 +116,13 @@ class _ComicsReadingPage extends State<ComicsReadingPage> {
         ),
       ),
       floatingActionButton: new FloatingActionButton(
-        backgroundColor: Colors.blueGrey[600],
+        backgroundColor: Colors.grey[100],
         onPressed: () {
           comicsCarousel.jumpToPage(int.parse(_c.text) - 1);
         },
-        child: Icon(Icons.search),
+        child: Icon(Icons.search,
+        color: Colors.black,
+        ),
       ),
     );
   }

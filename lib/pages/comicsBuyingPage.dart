@@ -73,7 +73,7 @@ class _ComicsBuyingPage extends State<ComicsBuyingPage> {
         title: Text(
           widget.comics.name,
           style: TextStyle(
-              color: Colors.white, fontSize: 28, fontFamily: 'Toontime'),
+              color: Colors.white, fontSize: 28, fontFamily: 'Lemon'),
         ),
         backgroundColor: Colors.blueGrey[600],
       ),
@@ -92,7 +92,7 @@ class _ComicsBuyingPage extends State<ComicsBuyingPage> {
                       style: TextStyle(
                           color: Colors.black,
                           fontSize: 15,
-                          fontFamily: 'Toontime'))),
+                          fontFamily: 'Lemon'))),
               Container(
                   alignment: Alignment.bottomLeft,
                   padding: EdgeInsets.only(left: 25, right: 25, bottom: 70),
@@ -100,7 +100,7 @@ class _ComicsBuyingPage extends State<ComicsBuyingPage> {
                       style: TextStyle(
                           color: Colors.black,
                           fontSize: 18,
-                          fontFamily: 'Toontime')))
+                          fontFamily: 'Lemon')))
             ],
           ),
         ),

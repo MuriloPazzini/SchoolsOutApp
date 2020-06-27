@@ -49,10 +49,10 @@ class _resultpageState extends State<resultpage> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Resultado",
-            style: TextStyle(fontFamily: 'Toontime', color: Colors.white)),
+            style: TextStyle(fontFamily: 'Lemon', color: Colors.black)),
         automaticallyImplyLeading: false,
         centerTitle: true,
-        backgroundColor: Colors.blueGrey[600],
+        backgroundColor: Colors.grey[100],
       ),
       drawer: menu(),
       body: SafeArea(
@@ -88,7 +88,7 @@ class _resultpageState extends State<resultpage> {
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                       fontSize: 38.0,
-                                      fontFamily: "Toontime",
+                                      fontFamily: "Lemon",
                                     ),
                                   )
                                 : Text(
@@ -96,7 +96,7 @@ class _resultpageState extends State<resultpage> {
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                       fontSize: 38.0,
-                                      fontFamily: "Toontime",
+                                      fontFamily: "Lemon",
                                     ),
                                   ),
                           )),
@@ -111,7 +111,7 @@ class _resultpageState extends State<resultpage> {
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontSize: 22.0,
-                                fontFamily: "Toontime",
+                                fontFamily: "Lemon",
                               ),
                             ),
                           )),
@@ -133,7 +133,7 @@ class _resultpageState extends State<resultpage> {
                     },
                     child: Text(
                       "Continue",
-                      style: TextStyle(fontSize: 18.0, fontFamily: 'Toontime'),
+                      style: TextStyle(fontSize: 18.0, fontFamily: 'Lemon'),
                     ),
                     padding: EdgeInsets.symmetric(
                       vertical: 10.0,

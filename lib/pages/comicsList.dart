@@ -122,16 +122,16 @@ class ComicsListState extends State<ComicsList> {
         if (snapshot.data == null) {
           return Scaffold(
               appBar: AppBar(
-                iconTheme: new IconThemeData(color: Colors.white),
+                iconTheme: new IconThemeData(color: Colors.black),
                 centerTitle: true,
                 title: Text(
                   "School's Out",
                   style: TextStyle(
-                      color: Colors.white,
+                      color: Colors.black,
                       fontSize: 28,
-                      fontFamily: 'Toontime'),
+                      fontFamily: 'Lemon'),
                 ),
-                backgroundColor: Colors.blueGrey[600],
+                backgroundColor: Colors.grey[100],
               ),
               drawer: menu(),
               body: Center(
@@ -154,16 +154,16 @@ class ComicsListState extends State<ComicsList> {
           return Scaffold(
               backgroundColor: Colors.white,
               appBar: AppBar(
-                iconTheme: new IconThemeData(color: Colors.white),
+                iconTheme: new IconThemeData(color: Colors.black),
                 centerTitle: true,
                 title: Text(
                   "School's Out",
                   style: TextStyle(
-                      color: Colors.white,
+                      color: Colors.black,
                       fontSize: 28,
-                      fontFamily: 'Toontime'),
+                      fontFamily: 'Lemon'),
                 ),
-                backgroundColor: Colors.blueGrey[600],
+                backgroundColor: Colors.grey[100],
               ),
               drawer: menu(),
               body: PageView.builder(
@@ -180,16 +180,16 @@ class ComicsListState extends State<ComicsList> {
         } else {
           return Scaffold(
               appBar: AppBar(
-                iconTheme: new IconThemeData(color: Colors.white),
+                iconTheme: new IconThemeData(color: Colors.black),
                 centerTitle: true,
                 title: Text(
                   "School's Out",
                   style: TextStyle(
-                      color: Colors.white,
+                      color: Colors.black,
                       fontSize: 28,
-                      fontFamily: 'Toontime'),
+                      fontFamily: 'Lemon'),
                 ),
-                backgroundColor: Colors.blueGrey[600],
+                backgroundColor: Colors.grey[100],
               ),
               drawer: menu(),
               body: SafeArea(

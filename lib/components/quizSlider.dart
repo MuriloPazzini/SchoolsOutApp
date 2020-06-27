@@ -95,7 +95,7 @@ class _quizSliderState extends State<quizSlider> {
                             padding: EdgeInsets.only(top: 5),
                             child: Text(
                               quiz.name,
-                              style: TextStyle(fontFamily: 'Toontime'),
+                              style: TextStyle(fontFamily: 'Lemon'),
                             ),
                           )
                         ],

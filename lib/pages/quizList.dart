@@ -39,14 +39,14 @@ class _QuizList extends State<QuizList> {
           return Scaffold(
             backgroundColor: Colors.white,
             appBar: AppBar(
-              iconTheme: new IconThemeData(color: Colors.white),
+              iconTheme: new IconThemeData(color: Colors.black),
               centerTitle: true,
               title: Text(
                 "School's Out",
                 style: TextStyle(
-                    color: Colors.white, fontSize: 28, fontFamily: 'Toontime'),
+                    color: Colors.black, fontSize: 28, fontFamily: 'Lemon'),
               ),
-              backgroundColor: Colors.blueGrey[600],
+              backgroundColor: Colors.grey[100],
             ),
             drawer: menu(),
             body: SafeArea(
@@ -82,7 +82,7 @@ class _QuizList extends State<QuizList> {
                           Padding(
                             padding: EdgeInsets.only(top: 12.0),
                             child: Text(quizItem.name,
-                                style: TextStyle(fontFamily: 'Toontime')),
+                                style: TextStyle(fontFamily: 'Lemon')),
                           ),
                         ],
                       );

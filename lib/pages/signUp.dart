@@ -39,7 +39,7 @@ class _SignUpPageState extends State<SignUpPage> {
     decoration: InputDecoration(
         contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         hintText: "Apelido",
-        hintStyle: TextStyle(fontFamily: 'Toontime'),
+        hintStyle: TextStyle(fontFamily: 'Lemon'),
         border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(32.0),
             borderSide: new BorderSide(width: 1, color: Colors.teal)),
@@ -53,7 +53,7 @@ class _SignUpPageState extends State<SignUpPage> {
     decoration: InputDecoration(
         contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         hintText: "Interesses",
-        hintStyle: TextStyle(fontFamily: 'Toontime'),
+        hintStyle: TextStyle(fontFamily: 'Lemon'),
         border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(32.0),
             borderSide: new BorderSide(width: 1, color: Colors.teal)),
@@ -67,7 +67,7 @@ class _SignUpPageState extends State<SignUpPage> {
     decoration: InputDecoration(
         contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         hintText: "E-mail",
-        hintStyle: TextStyle(fontFamily: 'Toontime'),
+        hintStyle: TextStyle(fontFamily: 'Lemon'),
         border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(32.0),
             borderSide: new BorderSide(width: 1, color: Colors.teal)),
@@ -81,7 +81,7 @@ class _SignUpPageState extends State<SignUpPage> {
     decoration: InputDecoration(
         contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         hintText: "Senha",
-        hintStyle: TextStyle(fontFamily: 'Toontime'),
+        hintStyle: TextStyle(fontFamily: 'Lemon'),
         border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(32.0),
             borderSide: new BorderSide(width: 1, color: Colors.teal)),
@@ -187,11 +187,11 @@ class _SignUpPageState extends State<SignUpPage> {
         appBar: new AppBar(
           iconTheme: new IconThemeData(color: Colors.white),
           centerTitle: true,
-          backgroundColor: Colors.blueGrey[600],
+          backgroundColor: Colors.grey[100],
           title: Text(
             "Registro",
             style: TextStyle(
-                color: Colors.white, fontSize: 28, fontFamily: 'Toontime'),
+                color: Colors.black, fontSize: 28, fontFamily: 'Lemon'),
           ),
         ),
         body: SafeArea(
@@ -284,17 +284,18 @@ class _SignUpPageState extends State<SignUpPage> {
         appBar: new AppBar(
           iconTheme: new IconThemeData(color: Colors.white),
           centerTitle: true,
-          backgroundColor: Colors.blueGrey[600],
+          backgroundColor: Colors.grey[100],
           title: Text(
             "School's Out",
             style: TextStyle(
-                color: Colors.white, fontSize: 28, fontFamily: 'Toontime'),
+                color: Colors.black, fontSize: 28, fontFamily: 'Lemon'),
           ),
         ),
         floatingActionButton: new FloatingActionButton(
-          backgroundColor: Colors.blueGrey[600],
+          backgroundColor: Colors.grey[100],
           child: Icon(Icons.check),
           onPressed: signUp,
+          foregroundColor: Colors.black,
         ),
         body: SafeArea(
           child: SingleChildScrollView(
